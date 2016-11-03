@@ -8,6 +8,8 @@ Angular directive for Bootstrap Switch. Useful to make a checkbox more entertain
   npm install jw-bootstrap-switch-ng2 --save
 ```
 
+![]('https://www.dropbox.com/s/ujuyufi3akvnu0v/preview-switch.gif?dl=0')
+
 ## Usage
 Add JWBootstrapSwitchModule to your list of modules imports:
 
