@@ -13,6 +13,7 @@
     "url": "https://github.com/JulioWar/jw-bootstrap-switch-ng2/issues"
   },
   "main": "./dist/index.js",
+  "typings": "./src/index.ts",
   "keywords": [
     "angular",
     "angular2",
