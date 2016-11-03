@@ -8,6 +8,7 @@ export class AppComponent{
     public offText = "Off Text";
     public size = "normal";
     public animated  = false;
+    inverse = true;
     value = true;
     labelText:string ="";
     offColorValue = false;

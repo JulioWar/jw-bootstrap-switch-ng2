@@ -48,5 +48,8 @@
     "typings": "^1.4.0",
     "zone.js": "^0.6.25"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+     "compile-dist":"tsc"
+  }
 }

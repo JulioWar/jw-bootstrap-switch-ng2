@@ -2,7 +2,6 @@ import {
     Component,
     ElementRef,
     Input,
-    OnInit,
     HostListener,
     AfterViewInit,
     forwardRef,
@@ -11,10 +10,10 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor , NG_VALUE_ACCESSOR } from "@angular/forms";
 
-const noop = () => {
+const callback = () => {
 };
 
-export const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
+export const CUSTOM_INPUT: any = {
     provide: NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => JWBootstrapSwitchDirective),
     multi: true
@@ -30,13 +29,13 @@ export const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
                         <span class="{{ (inverse) ? getOffClasses() : getOnClasses() }}" >{{ (inverse) ? offText : onText }}</span>
                         <span class="{{ baseClass }}-label">&nbsp;{{ labelText }}</span>
                         <span class="{{ (inverse) ? getOnClasses() : getOffClasses() }}" >{{ (inverse) ? onText : offText }}</span>
-                        <input type="checkbox" [(ngModel)]="value" [disabled]="disabled" (focus)="onFocus()" (blur)="onBlur()" >
+                        <input type="checkbox" [(ngModel)]="value" (change)="onChange()" [disabled]="disabled" (focus)="onFocus()" (blur)="onBlur()" >
                     </div>
                 </div>`,
-    providers: [CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR]
+    providers: [CUSTOM_INPUT]
 })
 
-export class JWBootstrapSwitchDirective implements OnInit, AfterViewInit, ControlValueAccessor {
+export class JWBootstrapSwitchDirective implements AfterViewInit, ControlValueAccessor {
 
     private innerState: boolean = true;
     private focused: boolean = false;
@@ -61,6 +60,29 @@ export class JWBootstrapSwitchDirective implements OnInit, AfterViewInit, Contro
     private outerWidth: number = 0;
     private dragStart: number = null;
     private dragEnd: any = null;
+
+    private onTouchedCallback: () => void = callback;
+    private onChangeCallback: (_: any) => void = callback;
+
+    private getNativeElement() {
+        return this.el.nativeElement;
+    }
+
+    private $on(): any {
+        return this.getNativeElement().querySelector("span:first-child")
+    }
+
+    private $off(): any {
+        return this.getNativeElement().querySelector("span:nth-child(3)");
+    }
+
+    private $label(): any {
+        return this.getNativeElement().querySelector('span:nth-child(2)');
+    }
+
+    private $container(): any {
+        return this.getNativeElement().querySelector("." + this.baseClass + "-container");
+    }
 
     public getWrapperClasses() {
         let output: string = this.baseClass + " " + this.baseClass + "-" + this.wrapperClass;
@@ -90,7 +112,7 @@ export class JWBootstrapSwitchDirective implements OnInit, AfterViewInit, Contro
             output += " " + this.baseClass + "-disabled";
         }
 
-        if (this.indeterminate) {
+        if (this.indeterminate || this.innerState === null || typeof this.innerState === "undefined") {
             output += " " + this.baseClass + "-indeterminate";
         }
 
@@ -123,7 +145,9 @@ export class JWBootstrapSwitchDirective implements OnInit, AfterViewInit, Contro
 
     public getLabelMarginLeft(): string {
         let width = (this.inverse) ? -this.handleWidth : 0;
-        if (this.dragEnd) {
+        if(this.indeterminate || this.innerState === null || typeof this.innerState === "undefined") {
+            width = -(Number(this.handleWidth)/2);
+        } else if (this.dragEnd) {
             width = this.dragEnd;
         } else if (!this.innerState) {
             if (!this.inverse) {
@@ -136,9 +160,6 @@ export class JWBootstrapSwitchDirective implements OnInit, AfterViewInit, Contro
     }
 
     constructor(private el: ElementRef, private ngZone: NgZone) {
-    }
-
-    ngOnInit() {
     }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -239,24 +260,13 @@ export class JWBootstrapSwitchDirective implements OnInit, AfterViewInit, Contro
         this.onDragEnd(e, true);
     }
 
-    private getNativeElement() {
-        return this.el.nativeElement;
+    onFocus() {
+        this.focused = true;
     }
 
-    private $on(): any {
-        return this.getNativeElement().querySelector("span:first-child")
-    }
-
-    private $off(): any {
-        return this.getNativeElement().querySelector("span:nth-child(3)");
-    }
-
-    private $label(): any {
-        return this.getNativeElement().querySelector('span:nth-child(2)');
-    }
-
-    private $container(): any {
-        return this.getNativeElement().querySelector("." + this.baseClass + "-container");
+    onBlur() {
+        this.focused = false;
+        this.onTouchedCallback();
     }
 
     private calculateWith(): void {
@@ -267,16 +277,24 @@ export class JWBootstrapSwitchDirective implements OnInit, AfterViewInit, Contro
             self.$on().style.width = "auto";
             self.$off().style.width = "auto";
             self.$label().style.width = "auto";
-            let width = (this.innerHandleWidth === "auto") ? Math.max(self.$on().offsetWidth, self.$off().offsetWidth) : this.innerHandleWidth;
+            let width = (self.innerHandleWidth === "auto") ? Math.max(self.$on().offsetWidth, self.$off().offsetWidth) : self.innerHandleWidth;
 
-            if (this.labelWidth === "auto" &&
-                self.$label().offsetWidth < width &&
-                this.labelWidth < width) {
-
-                self.labelWidth = Number(width) - 13;
-
-            } else if (this.labelWidth === "auto" || this.labelWidth > self.$label().offsetWidth) {
-                self.labelWidth = self.$label().offsetWidth;
+            if (self.$label().offsetWidth < width) {
+                if(self.labelWidth === "auto") {
+                    self.labelWidth = Number(width) - 13;
+                } else {
+                    if(self.labelWidth < width) {
+                        self.labelWidth = self.labelWidth
+                    }
+                }
+            } else {
+                if(self.labelWidth === "auto") {
+                    self.labelWidth = self.$label().offsetWidth;
+                } else {
+                    if(self.labelWidth < self.$label().offsetWidth) {
+                        self.labelWidth = self.$label().offsetWidth
+                    }
+                }
             }
             self.outerWidth = self.$label().offsetWidth;
             self.handleWidth = width;
@@ -290,10 +308,7 @@ export class JWBootstrapSwitchDirective implements OnInit, AfterViewInit, Contro
     }
 
     @Input('switch-off-text') set setOffText(value: string) {
-        if (value)
-            this.offText = value;
-        else
-            this.offText = "OFF";
+        this.offText = (value) ? value : "OFF";
     }
 
     @Input('switch-label-text') set setLabelText(value: string) {
@@ -301,10 +316,7 @@ export class JWBootstrapSwitchDirective implements OnInit, AfterViewInit, Contro
     }
 
     @Input('switch-on-text') set setOnText(value: string) {
-        if (value)
-            this.onText = value;
-        else
-            this.onText = "ON";
+        this.onText = (value) ? value : "ON";
     }
 
     @Input('switch-size') set setSize(value: string) {
@@ -325,19 +337,19 @@ export class JWBootstrapSwitchDirective implements OnInit, AfterViewInit, Contro
     }
 
     @Input('switch-disabled') set setDisabled(value: boolean) {
-        if (value) this.disabled = value;
+        this.disabled = value;
     }
 
     @Input('switch-readonly') set setReadOnly(value: boolean) {
-        if (value) this.readonly = value;
+        this.readonly = value;
     }
 
     @Input('switch-indeterminate') set setIndeterminate(value: boolean) {
-        if (value) this.indeterminate = value;
+        this.indeterminate = value;
     }
 
     @Input('switch-inverse') set setInverse(value: boolean) {
-        if (value) this.inverse = value;
+        this.inverse = value;
     }
 
     @Input('switch-handle-width') set setHandleWidth(value: number) {
@@ -351,14 +363,12 @@ export class JWBootstrapSwitchDirective implements OnInit, AfterViewInit, Contro
         if (value) this.labelWidth = value;
     }
 
-    private onTouchedCallback: () => void = noop;
-    private onChangeCallback: (_: any) => void = noop;
-
     get value(): boolean {
         return this.innerState;
     };
 
     set value(v: boolean) {
+        if(v === null || typeof v === "undefined") this.indeterminate = true;
         this.setStateValue(v);
     }
 
@@ -367,15 +377,6 @@ export class JWBootstrapSwitchDirective implements OnInit, AfterViewInit, Contro
             this.innerState = v;
             this.onChangeCallback(v);
         }
-    }
-
-    onFocus() {
-        this.focused = true;
-    }
-
-    onBlur() {
-        this.focused = false;
-        this.onTouchedCallback();
     }
 
     writeValue(value: boolean) {

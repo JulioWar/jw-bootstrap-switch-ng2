@@ -72,10 +72,11 @@
         <div class="col-md-4">
             <h4>Inverse</h4>
             <p>
-                <bSwitch [switch-inverse]="true" [(ngModel)]="inverseValue"></bSwitch>
+                <bSwitch [switch-inverse]="inverse" [(ngModel)]="inverseValue" ></bSwitch>
             </p>
             <div class="btn-group">
-                <button class="btn btn-default" (click)="inverseValue = !inverseValue">Toggle</button>
+                <button class="btn btn-default" (click)="inverse = !inverse">Toggle Inverse Status</button>
+                <button class="btn btn-default" (click)="inverseValue = !inverseValue">Toggle Switch Value</button>
                 <button class="btn btn-default" (click)="getAlert(inverseValue)">Get</button>
             </div>
         </div>
@@ -145,13 +146,21 @@
             <input type="number" min="0" class="form-control" [(ngModel)]="labelWidth">
         </div>
         <div class="col-md-4">
-            <h4>All Width</h4>
+            <h4>All Attibutes</h4>
             <p>
                 <bSwitch
                         [switch-label-width]="labelWidth"
                         [switch-label-text]="labelText"
                         [switch-off-text]="offText"
                         [switch-on-text]="onText"
+                        [switch-on-color]="color"
+                        [switch-off-color]="offColor"
+                        [switch-size]="size"
+                        [switch-disabled]="disabled"
+                        [switch-readonly]="readonly"
+                        [switch-animate]="animate"
+                        [(ngModel)]="state"
+                        [switch-inverse]="inverse"
                         [switch-handle-width]="handleWidth">
                 </bSwitch>
             </p>
