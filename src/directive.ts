@@ -4,9 +4,12 @@ import {
     Input,
     OnInit,
     HostListener,
-    AfterViewInit, forwardRef, SimpleChanges, NgZone
+    AfterViewInit,
+    forwardRef,
+    SimpleChanges,
+    NgZone
 } from '@angular/core';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
+import { ControlValueAccessor , NG_VALUE_ACCESSOR } from "@angular/forms";
 
 const noop = () => {
 };
@@ -18,12 +21,11 @@ export const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-    moduleId: module.id,
     selector: 'bSwitch',
     outputs: ['value'],
     template: `<div class="{{ getWrapperClasses() }}" [style.width]=" (handleWidth  + (labelWidth + 9) ) +'px'"  >
-                    <div class="{{ baseClass }}-container " 
-                        [style.width]=" ((handleWidth * 2) + labelWidth + 9) +'px'" 
+                    <div class="{{ baseClass }}-container "
+                        [style.width]=" ((handleWidth * 2) + labelWidth + 9) +'px'"
                         [style.margin-left]="getLabelMarginLeft()">
                         <span class="{{ (inverse) ? getOffClasses() : getOnClasses() }}" >{{ (inverse) ? offText : onText }}</span>
                         <span class="{{ baseClass }}-label">&nbsp;{{ labelText }}</span>

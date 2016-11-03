@@ -1,13 +1,28 @@
 {
-  "name": "JWBootstrapSwitchDirective",
+  "name": "jw-bootstrap-switch-ng2",
   "version": "0.0.1",
   "description": "Bootstrap Switch for Angular 2",
   "author": "Julio Cesar Guerra Menendez",
   "email": "julio.war017@gamil.com",
   "url": "https://github.com/JulioWar",
-  "main": "dist/index.js",
-  "dependencies": {
-    "@angular/core": "^2.1.2"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JulioWar/jw-bootstrap-switch-ng2.git"
+  },
+  "bugs": {
+    "url": "https://github.com/JulioWar/jw-bootstrap-switch-ng2/issues"
+  },
+  "main": "./dist/index.js",
+  "keywords": [
+    "angular",
+    "angular2",
+    "bootstrap",
+    "switch",
+    "directive"
+  ],
+  "peerDependencies": {
+    "@angular/core": "^2.1.2",
+    "@angular/forms": "~2.1.0"
   },
   "devDependencies": {
     "@angular/common": "~2.1.0",
@@ -19,17 +34,18 @@
     "@angular/platform-browser-dynamic": "~2.1.0",
     "@angular/router": "~3.1.0",
     "@angular/upgrade": "~2.1.0",
+    "@types/core-js": "^0.9.34",
     "angular-in-memory-web-api": "~0.1.5",
     "bootstrap": "^3.3.7",
+    "concurrently": "^3.0.0",
     "core-js": "^2.4.1",
+    "lite-server": "^2.2.2",
     "reflect-metadata": "^0.1.8",
     "rxjs": "5.0.0-beta.12",
     "systemjs": "0.19.39",
-    "zone.js": "^0.6.25",
-    "concurrently": "^3.0.0",
-    "lite-server": "^2.2.2",
     "typescript": "^2.0.3",
-    "typings": "^1.4.0"
+    "typings": "^1.4.0",
+    "zone.js": "^0.6.25"
   },
   "license": "MIT"
 }
