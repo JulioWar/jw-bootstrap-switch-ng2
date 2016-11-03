@@ -1,0 +1,161 @@
+
+<div class="container">
+    <div class="page-header">
+        <h1>Examples</h1>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <h4>State</h4>
+            <p>
+                <bSwitch [(ngModel)]="state"></bSwitch>
+            </p>
+            <div class="btn-group">
+                <button class="btn btn-default" (click)="state = !state">Toggle</button>
+                <button class="btn btn-default" (click)="state = true">Set true</button>
+                <button class="btn btn-default" (click)="state = false">Set false</button>
+                <button class="btn btn-default" (click)="getAlert(state)">Get</button>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h4>Size</h4>
+            <p>
+                <bSwitch [switch-size]="size"></bSwitch>
+            </p>
+            <div class="btn-group">
+                <button class="btn btn-default" (click)="size = 'mini'">Mini</button>
+                <button class="btn btn-default" (click)="size = 'small'">Small</button>
+                <button class="btn btn-default" (click)="size = 'normal'">Normal</button>
+                <button class="btn btn-default" (click)="size = 'large'">Large</button>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h4>Animate</h4>
+            <p>
+                <bSwitch [switch-animate]="animate" [(ngModel)]="animated"></bSwitch>
+            </p>
+            <div class="btn-group">
+                <button class="btn btn-default" (click)="animate = !animate">Toggle</button>
+                <button class="btn btn-default" (click)="getAlert(animated)">Get</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <h4>Disabled</h4>
+            <p>
+                <bSwitch [switch-disabled]="disabled"></bSwitch>
+            </p>
+            <div class="btn-group">
+                <button class="btn btn-default" (click)="disabled = !disabled">Toggle</button>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h4>Readonly</h4>
+            <p>
+                <bSwitch [switch-readonly]="readonly"></bSwitch>
+            </p>
+            <div class="btn-group">
+                <button class="btn btn-default" (click)="readonly = !readonly">Toggle</button>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h4>Indeterminate</h4>
+            <p>
+                <bSwitch [switch-indeterminate]="indeterminate"></bSwitch>
+            </p>
+            <div class="btn-group">
+                <button class="btn btn-default" (click)="indeterminate = !indeterminate">Toggle</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <h4>Inverse</h4>
+            <p>
+                <bSwitch [switch-inverse]="true" [(ngModel)]="inverseValue"></bSwitch>
+            </p>
+            <div class="btn-group">
+                <button class="btn btn-default" (click)="inverseValue = !inverseValue">Toggle</button>
+                <button class="btn btn-default" (click)="getAlert(inverseValue)">Get</button>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h4>On Color</h4>
+            <p>
+                <bSwitch [switch-on-color]="color"></bSwitch>
+            </p>
+            <div class="btn-group">
+                <button class="btn btn-default" (click)="color = 'primary'">Primary</button>
+                <button class="btn btn-default" (click)="color = 'info'">Info</button>
+                <button class="btn btn-default" (click)="color = 'success'">Success</button>
+                <button class="btn btn-default" (click)="color = 'warning'">Warning</button>
+                <button class="btn btn-default" (click)="color = 'default'">Default</button>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h4>Off Color</h4>
+            <p>
+                <bSwitch [switch-off-color]="offColor" [(ngModel)]="offColorValue"></bSwitch>
+            </p>
+            <div class="btn-group">
+                <button class="btn btn-default" (click)="offColor = 'primary'">Primary</button>
+                <button class="btn btn-default" (click)="offColor = 'info'">Info</button>
+                <button class="btn btn-default" (click)="offColor = 'success'">Success</button>
+                <button class="btn btn-default" (click)="offColor = 'warning'">Warning</button>
+                <button class="btn btn-default" (click)="offColor = 'default'">Default</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <h4>On Text</h4>
+            <p>
+                <bSwitch [switch-on-text]="onText"></bSwitch>
+            </p>
+            <input type="text" class="form-control" [(ngModel)]="onText">
+        </div>
+        <div class="col-md-4">
+            <h4>Off Text</h4>
+            <p>
+                <bSwitch [switch-off-text]="offText" [(ngModel)]="offTextValue"></bSwitch>
+            </p>
+            <input type="text" class="form-control" [(ngModel)]="offText">
+        </div>
+        <div class="col-md-4">
+            <h4>Label Text</h4>
+            <p>
+                <bSwitch [switch-label-text]="labelText"></bSwitch>
+            </p>
+            <input type="text" class="form-control" [(ngModel)]="labelText">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <h4>Handle Width</h4>
+            <p>
+                <bSwitch [switch-handle-width]="handleWidth"></bSwitch>
+            </p>
+            <input type="number" min="0" class="form-control" [(ngModel)]="handleWidth">
+        </div>
+        <div class="col-md-4">
+            <h4>Label Width</h4>
+            <p>
+                <bSwitch [switch-label-width]="labelWidth"></bSwitch>
+            </p>
+            <input type="number" min="0" class="form-control" [(ngModel)]="labelWidth">
+        </div>
+        <div class="col-md-4">
+            <h4>All Width</h4>
+            <p>
+                <bSwitch
+                        [switch-label-width]="labelWidth"
+                        [switch-label-text]="labelText"
+                        [switch-off-text]="offText"
+                        [switch-on-text]="onText"
+                        [switch-handle-width]="handleWidth">
+                </bSwitch>
+            </p>
+            <input type="number" min="0" class="form-control" [(ngModel)]="labelWidth">
+        </div>
+    </div>
+</div>
