@@ -1,6 +1,6 @@
 {
   "name": "jw-bootstrap-switch-ng2",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Bootstrap Switch for Angular 2",
   "author": "Julio Cesar Guerra Menendez",
   "email": "julio.war017@gamil.com",
@@ -50,6 +50,6 @@
   },
   "license": "MIT",
   "scripts": {
-     "compile-dist":"tsc"
+    "compile-dist": "tsc"
   }
 }
