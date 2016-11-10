@@ -18,7 +18,8 @@ CDN:
 ```html
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/css/bootstrap3/bootstrap-switch.css">
 ```
-Or download from the official page [here](http://www.bootstrap-switch.org/).
+Or download from the official page
+<a href="http://www.bootstrap-switch.org/" target="_blank">here</a>.
 
 
 Add JWBootstrapSwitchModule to your list of modules imports:
