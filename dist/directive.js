@@ -8,11 +8,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
+var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
 var callback = function () {
 };
-exports.CUSTOM_INPUT = {
+var CUSTOM_INPUT = {
     provide: forms_1.NG_VALUE_ACCESSOR,
     useExisting: core_1.forwardRef(function () { return JWBootstrapSwitchDirective; }),
     multi: true
@@ -21,7 +21,7 @@ var JWBootstrapSwitchDirective = (function () {
     function JWBootstrapSwitchDirective(el, ngZone) {
         this.el = el;
         this.ngZone = ngZone;
-        this.innerState = true;
+        this.innerState = false;
         this.focused = false;
         this.size = 'normal';
         this.animate = true;
@@ -38,6 +38,7 @@ var JWBootstrapSwitchDirective = (function () {
         this.handleWidth = "auto";
         this.innerHandleWidth = "auto";
         this.labelWidth = "auto";
+        this.innerLabelWidth = "auto";
         this.baseClass = "bootstrap-switch";
         this.wrapperClass = "wrapper";
         this.outerWidth = 0;
@@ -45,6 +46,7 @@ var JWBootstrapSwitchDirective = (function () {
         this.dragEnd = null;
         this.onTouchedCallback = callback;
         this.onChangeCallback = callback;
+        this.onChangeState = new core_1.EventEmitter();
     }
     JWBootstrapSwitchDirective.prototype.getNativeElement = function () {
         return this.el.nativeElement;
@@ -223,25 +225,27 @@ var JWBootstrapSwitchDirective = (function () {
             self.$on().style.width = "auto";
             self.$off().style.width = "auto";
             self.$label().style.width = "auto";
-            var width = (self.innerHandleWidth === "auto") ? Math.max(self.$on().offsetWidth, self.$off().offsetWidth) : self.innerHandleWidth;
+            var width = (self.innerHandleWidth === "auto")
+                ? Math.max(self.$on().offsetWidth, self.$off().offsetWidth)
+                : self.innerHandleWidth;
             if (self.$label().offsetWidth < width) {
-                if (self.labelWidth === "auto") {
+                if (self.innerLabelWidth === "auto") {
                     self.labelWidth = Number(width) - 13;
                 }
                 else {
-                    if (self.labelWidth < width) {
-                        self.labelWidth = self.labelWidth;
-                    }
+                    self.labelWidth = (self.innerLabelWidth < width)
+                        ? width
+                        : self.innerLabelWidth;
                 }
             }
             else {
-                if (self.labelWidth === "auto") {
+                if (self.innerLabelWidth === "auto") {
                     self.labelWidth = self.$label().offsetWidth;
                 }
                 else {
-                    if (self.labelWidth < self.$label().offsetWidth) {
-                        self.labelWidth = self.$label().offsetWidth;
-                    }
+                    self.labelWidth = (self.innerLabelWidth < self.$label().offsetWidth)
+                        ? self.$label().offsetWidth
+                        : self.innerLabelWidth;
                 }
             }
             self.outerWidth = self.$label().offsetWidth;
@@ -347,7 +351,19 @@ var JWBootstrapSwitchDirective = (function () {
     Object.defineProperty(JWBootstrapSwitchDirective.prototype, "setLabelWidth", {
         set: function (value) {
             if (value)
-                this.labelWidth = value;
+                this.innerLabelWidth = value;
+            else
+                this.innerLabelWidth = "auto";
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JWBootstrapSwitchDirective.prototype, "setBaseClass", {
+        set: function (value) {
+            if (value)
+                this.baseClass = value;
+            else
+                this.baseClass = "bootstrap-switch";
         },
         enumerable: true,
         configurable: true
@@ -367,6 +383,10 @@ var JWBootstrapSwitchDirective = (function () {
     ;
     JWBootstrapSwitchDirective.prototype.setStateValue = function (v) {
         if (v !== this.innerState) {
+            this.onChangeState.emit({
+                previousValue: this.innerState,
+                currentValue: v
+            });
             this.innerState = v;
             this.onChangeCallback(v);
         }
@@ -382,129 +402,138 @@ var JWBootstrapSwitchDirective = (function () {
     JWBootstrapSwitchDirective.prototype.registerOnTouched = function (fn) {
         this.onTouchedCallback = fn;
     };
-    __decorate([
-        core_1.HostListener('click'), 
-        __metadata('design:type', Function), 
-        __metadata('design:paramtypes', [Object]), 
-        __metadata('design:returntype', void 0)
-    ], JWBootstrapSwitchDirective.prototype, "onClick", null);
-    __decorate([
-        core_1.HostListener('touchstart', ['$event']), 
-        __metadata('design:type', Function), 
-        __metadata('design:paramtypes', [Object]), 
-        __metadata('design:returntype', void 0)
-    ], JWBootstrapSwitchDirective.prototype, "onTouchStart", null);
-    __decorate([
-        core_1.HostListener('mousedown', ['$event']), 
-        __metadata('design:type', Function), 
-        __metadata('design:paramtypes', [Object]), 
-        __metadata('design:returntype', void 0)
-    ], JWBootstrapSwitchDirective.prototype, "onMouseDown", null);
-    __decorate([
-        core_1.HostListener('touchmove', ['$event']), 
-        __metadata('design:type', Function), 
-        __metadata('design:paramtypes', [Object]), 
-        __metadata('design:returntype', void 0)
-    ], JWBootstrapSwitchDirective.prototype, "onTouchMove", null);
-    __decorate([
-        core_1.HostListener('mousemove', ['$event']), 
-        __metadata('design:type', Function), 
-        __metadata('design:paramtypes', [Object]), 
-        __metadata('design:returntype', void 0)
-    ], JWBootstrapSwitchDirective.prototype, "onMouseMove", null);
-    __decorate([
-        core_1.HostListener('mouseup', ['$event']), 
-        __metadata('design:type', Function), 
-        __metadata('design:paramtypes', [Event]), 
-        __metadata('design:returntype', void 0)
-    ], JWBootstrapSwitchDirective.prototype, "onMouseUp", null);
-    __decorate([
-        core_1.HostListener('touchend', ['$event']), 
-        __metadata('design:type', Function), 
-        __metadata('design:paramtypes', [Event]), 
-        __metadata('design:returntype', void 0)
-    ], JWBootstrapSwitchDirective.prototype, "onTouchEnd", null);
-    __decorate([
-        core_1.HostListener('mouseleave', ['$event']), 
-        __metadata('design:type', Function), 
-        __metadata('design:paramtypes', [Event]), 
-        __metadata('design:returntype', void 0)
-    ], JWBootstrapSwitchDirective.prototype, "onMouseLeave", null);
-    __decorate([
-        core_1.Input('switch-off-text'), 
-        __metadata('design:type', String), 
-        __metadata('design:paramtypes', [String])
-    ], JWBootstrapSwitchDirective.prototype, "setOffText", null);
-    __decorate([
-        core_1.Input('switch-label-text'), 
-        __metadata('design:type', String), 
-        __metadata('design:paramtypes', [String])
-    ], JWBootstrapSwitchDirective.prototype, "setLabelText", null);
-    __decorate([
-        core_1.Input('switch-on-text'), 
-        __metadata('design:type', String), 
-        __metadata('design:paramtypes', [String])
-    ], JWBootstrapSwitchDirective.prototype, "setOnText", null);
-    __decorate([
-        core_1.Input('switch-size'), 
-        __metadata('design:type', String), 
-        __metadata('design:paramtypes', [String])
-    ], JWBootstrapSwitchDirective.prototype, "setSize", null);
-    __decorate([
-        core_1.Input('switch-animate'), 
-        __metadata('design:type', Boolean), 
-        __metadata('design:paramtypes', [Boolean])
-    ], JWBootstrapSwitchDirective.prototype, "setAnimate", null);
-    __decorate([
-        core_1.Input('switch-on-color'), 
-        __metadata('design:type', String), 
-        __metadata('design:paramtypes', [String])
-    ], JWBootstrapSwitchDirective.prototype, "setOnColor", null);
-    __decorate([
-        core_1.Input('switch-off-color'), 
-        __metadata('design:type', String), 
-        __metadata('design:paramtypes', [String])
-    ], JWBootstrapSwitchDirective.prototype, "setOffColor", null);
-    __decorate([
-        core_1.Input('switch-disabled'), 
-        __metadata('design:type', Boolean), 
-        __metadata('design:paramtypes', [Boolean])
-    ], JWBootstrapSwitchDirective.prototype, "setDisabled", null);
-    __decorate([
-        core_1.Input('switch-readonly'), 
-        __metadata('design:type', Boolean), 
-        __metadata('design:paramtypes', [Boolean])
-    ], JWBootstrapSwitchDirective.prototype, "setReadOnly", null);
-    __decorate([
-        core_1.Input('switch-indeterminate'), 
-        __metadata('design:type', Boolean), 
-        __metadata('design:paramtypes', [Boolean])
-    ], JWBootstrapSwitchDirective.prototype, "setIndeterminate", null);
-    __decorate([
-        core_1.Input('switch-inverse'), 
-        __metadata('design:type', Boolean), 
-        __metadata('design:paramtypes', [Boolean])
-    ], JWBootstrapSwitchDirective.prototype, "setInverse", null);
-    __decorate([
-        core_1.Input('switch-handle-width'), 
-        __metadata('design:type', Number), 
-        __metadata('design:paramtypes', [Number])
-    ], JWBootstrapSwitchDirective.prototype, "setHandleWidth", null);
-    __decorate([
-        core_1.Input('switch-label-width'), 
-        __metadata('design:type', Number), 
-        __metadata('design:paramtypes', [Number])
-    ], JWBootstrapSwitchDirective.prototype, "setLabelWidth", null);
-    JWBootstrapSwitchDirective = __decorate([
-        core_1.Component({
-            selector: 'bSwitch',
-            outputs: ['value'],
-            template: "<div class=\"{{ getWrapperClasses() }}\" [style.width]=\" (handleWidth  + (labelWidth + 9) ) +'px'\"  >\n                    <div class=\"{{ baseClass }}-container \"\n                        [style.width]=\" ((handleWidth * 2) + labelWidth + 9) +'px'\"\n                        [style.margin-left]=\"getLabelMarginLeft()\">\n                        <span class=\"{{ (inverse) ? getOffClasses() : getOnClasses() }}\" >{{ (inverse) ? offText : onText }}</span>\n                        <span class=\"{{ baseClass }}-label\">&nbsp;{{ labelText }}</span>\n                        <span class=\"{{ (inverse) ? getOnClasses() : getOffClasses() }}\" >{{ (inverse) ? onText : offText }}</span>\n                        <input type=\"checkbox\" [(ngModel)]=\"value\" (change)=\"onChange()\" [disabled]=\"disabled\" (focus)=\"onFocus()\" (blur)=\"onBlur()\" >\n                    </div>\n                </div>",
-            providers: [exports.CUSTOM_INPUT]
-        }), 
-        __metadata('design:paramtypes', [core_1.ElementRef, core_1.NgZone])
-    ], JWBootstrapSwitchDirective);
     return JWBootstrapSwitchDirective;
 }());
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
+], JWBootstrapSwitchDirective.prototype, "onChangeState", void 0);
+__decorate([
+    core_1.HostListener('click'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], JWBootstrapSwitchDirective.prototype, "onClick", null);
+__decorate([
+    core_1.HostListener('touchstart', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], JWBootstrapSwitchDirective.prototype, "onTouchStart", null);
+__decorate([
+    core_1.HostListener('mousedown', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], JWBootstrapSwitchDirective.prototype, "onMouseDown", null);
+__decorate([
+    core_1.HostListener('touchmove', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], JWBootstrapSwitchDirective.prototype, "onTouchMove", null);
+__decorate([
+    core_1.HostListener('mousemove', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], JWBootstrapSwitchDirective.prototype, "onMouseMove", null);
+__decorate([
+    core_1.HostListener('mouseup', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Event]),
+    __metadata("design:returntype", void 0)
+], JWBootstrapSwitchDirective.prototype, "onMouseUp", null);
+__decorate([
+    core_1.HostListener('touchend', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Event]),
+    __metadata("design:returntype", void 0)
+], JWBootstrapSwitchDirective.prototype, "onTouchEnd", null);
+__decorate([
+    core_1.HostListener('mouseleave', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Event]),
+    __metadata("design:returntype", void 0)
+], JWBootstrapSwitchDirective.prototype, "onMouseLeave", null);
+__decorate([
+    core_1.Input('switch-off-text'),
+    __metadata("design:type", String),
+    __metadata("design:paramtypes", [String])
+], JWBootstrapSwitchDirective.prototype, "setOffText", null);
+__decorate([
+    core_1.Input('switch-label-text'),
+    __metadata("design:type", String),
+    __metadata("design:paramtypes", [String])
+], JWBootstrapSwitchDirective.prototype, "setLabelText", null);
+__decorate([
+    core_1.Input('switch-on-text'),
+    __metadata("design:type", String),
+    __metadata("design:paramtypes", [String])
+], JWBootstrapSwitchDirective.prototype, "setOnText", null);
+__decorate([
+    core_1.Input('switch-size'),
+    __metadata("design:type", String),
+    __metadata("design:paramtypes", [String])
+], JWBootstrapSwitchDirective.prototype, "setSize", null);
+__decorate([
+    core_1.Input('switch-animate'),
+    __metadata("design:type", Boolean),
+    __metadata("design:paramtypes", [Boolean])
+], JWBootstrapSwitchDirective.prototype, "setAnimate", null);
+__decorate([
+    core_1.Input('switch-on-color'),
+    __metadata("design:type", String),
+    __metadata("design:paramtypes", [String])
+], JWBootstrapSwitchDirective.prototype, "setOnColor", null);
+__decorate([
+    core_1.Input('switch-off-color'),
+    __metadata("design:type", String),
+    __metadata("design:paramtypes", [String])
+], JWBootstrapSwitchDirective.prototype, "setOffColor", null);
+__decorate([
+    core_1.Input('switch-disabled'),
+    __metadata("design:type", Boolean),
+    __metadata("design:paramtypes", [Boolean])
+], JWBootstrapSwitchDirective.prototype, "setDisabled", null);
+__decorate([
+    core_1.Input('switch-readonly'),
+    __metadata("design:type", Boolean),
+    __metadata("design:paramtypes", [Boolean])
+], JWBootstrapSwitchDirective.prototype, "setReadOnly", null);
+__decorate([
+    core_1.Input('switch-indeterminate'),
+    __metadata("design:type", Boolean),
+    __metadata("design:paramtypes", [Boolean])
+], JWBootstrapSwitchDirective.prototype, "setIndeterminate", null);
+__decorate([
+    core_1.Input('switch-inverse'),
+    __metadata("design:type", Boolean),
+    __metadata("design:paramtypes", [Boolean])
+], JWBootstrapSwitchDirective.prototype, "setInverse", null);
+__decorate([
+    core_1.Input('switch-handle-width'),
+    __metadata("design:type", Number),
+    __metadata("design:paramtypes", [Number])
+], JWBootstrapSwitchDirective.prototype, "setHandleWidth", null);
+__decorate([
+    core_1.Input('switch-label-width'),
+    __metadata("design:type", Number),
+    __metadata("design:paramtypes", [Number])
+], JWBootstrapSwitchDirective.prototype, "setLabelWidth", null);
+__decorate([
+    core_1.Input('switch-base-class'),
+    __metadata("design:type", String),
+    __metadata("design:paramtypes", [String])
+], JWBootstrapSwitchDirective.prototype, "setBaseClass", null);
+JWBootstrapSwitchDirective = __decorate([
+    core_1.Component({
+        selector: 'bSwitch',
+        outputs: ['value'],
+        template: "<div class=\"{{ getWrapperClasses() }}\" [style.width]=\" (handleWidth  + (labelWidth + 9) ) +'px'\"  >\n                    <div class=\"{{ baseClass }}-container \"\n                        [style.width]=\" ((handleWidth * 2) + labelWidth + 9) +'px'\"\n                        [style.margin-left]=\"getLabelMarginLeft()\">\n                        <span class=\"{{ (inverse) ? getOffClasses() : getOnClasses() }}\" >{{ (inverse) ? offText : onText }}</span>\n                        <span class=\"{{ baseClass }}-label\">&nbsp;{{ labelText }}</span>\n                        <span class=\"{{ (inverse) ? getOnClasses() : getOffClasses() }}\" >{{ (inverse) ? onText : offText }}</span>\n                        <input type=\"checkbox\" [(ngModel)]=\"value\" [disabled]=\"disabled\" (focus)=\"onFocus()\" (blur)=\"onBlur()\" >\n                    </div>\n                </div>",
+        providers: [CUSTOM_INPUT]
+    }),
+    __metadata("design:paramtypes", [core_1.ElementRef, core_1.NgZone])
+], JWBootstrapSwitchDirective);
 exports.JWBootstrapSwitchDirective = JWBootstrapSwitchDirective;
 //# sourceMappingURL=directive.js.map

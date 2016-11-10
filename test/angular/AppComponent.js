@@ -14,6 +14,7 @@ var AppComponent = (function () {
         this.offText = "Off Text";
         this.size = "normal";
         this.animated = false;
+        this.inverse = true;
         this.value = true;
         this.labelText = "";
         this.offColorValue = false;
@@ -21,6 +22,9 @@ var AppComponent = (function () {
     }
     AppComponent.prototype.getAlert = function (value) {
         alert(value);
+    };
+    AppComponent.prototype.onChange = function (event) {
+        console.log(event);
     };
     AppComponent = __decorate([
         core_1.Component({

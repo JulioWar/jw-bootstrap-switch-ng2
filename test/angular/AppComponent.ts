@@ -17,4 +17,8 @@ export class AppComponent{
     getAlert(value:any) {
         alert(value);
     }
+
+    onChange(event) {
+        console.log(event);
+    }
 }
