@@ -41,7 +41,6 @@ var JWBootstrapSwitchDirective = (function () {
         this.innerLabelWidth = "auto";
         this.baseClass = "bootstrap-switch";
         this.wrapperClass = "wrapper";
-        this.outerWidth = 0;
         this.dragStart = null;
         this.dragEnd = null;
         this.onTouchedCallback = callback;
@@ -127,17 +126,14 @@ var JWBootstrapSwitchDirective = (function () {
         return width + "px";
     };
     JWBootstrapSwitchDirective.prototype.ngOnChanges = function (changes) {
-        if (this.checkChanges(changes['setLabelText']) ||
-            this.checkChanges(changes['setOnText']) ||
-            this.checkChanges(changes['setHandleWidth']) ||
-            this.checkChanges(changes['setLabelWidth']) ||
-            this.checkChanges(changes['setOffText']) ||
-            this.checkChanges(changes['setSize'])) {
+        if (changes['setLabelText'] ||
+            changes['setOnText'] ||
+            changes['setHandleWidth'] ||
+            changes['setLabelWidth'] ||
+            changes['setOffText'] ||
+            changes['setSize']) {
             this.calculateWith();
         }
-    };
-    JWBootstrapSwitchDirective.prototype.checkChanges = function (object) {
-        return object && object.previousValue !== object.currentValue;
     };
     JWBootstrapSwitchDirective.prototype.ngAfterViewInit = function () {
         this.calculateWith();
@@ -233,9 +229,7 @@ var JWBootstrapSwitchDirective = (function () {
                     self.labelWidth = Number(width) - 13;
                 }
                 else {
-                    self.labelWidth = (self.innerLabelWidth < width)
-                        ? width
-                        : self.innerLabelWidth;
+                    self.labelWidth = self.innerLabelWidth;
                 }
             }
             else {
@@ -243,12 +237,9 @@ var JWBootstrapSwitchDirective = (function () {
                     self.labelWidth = self.$label().offsetWidth;
                 }
                 else {
-                    self.labelWidth = (self.innerLabelWidth < self.$label().offsetWidth)
-                        ? self.$label().offsetWidth
-                        : self.innerLabelWidth;
+                    self.labelWidth = self.innerLabelWidth;
                 }
             }
-            self.outerWidth = self.$label().offsetWidth;
             self.handleWidth = width;
             self.ngZone.run(function () {
                 self.$label().style.width = self.labelWidth + "px";
@@ -257,6 +248,20 @@ var JWBootstrapSwitchDirective = (function () {
             });
         });
     };
+    Object.defineProperty(JWBootstrapSwitchDirective.prototype, "setBaseClass", {
+        set: function (value) {
+            this.baseClass = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JWBootstrapSwitchDirective.prototype, "setWrapperClass", {
+        set: function (value) {
+            this.wrapperClass = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(JWBootstrapSwitchDirective.prototype, "setOffText", {
         set: function (value) {
             this.offText = (value) ? value : "OFF";
@@ -340,30 +345,14 @@ var JWBootstrapSwitchDirective = (function () {
     });
     Object.defineProperty(JWBootstrapSwitchDirective.prototype, "setHandleWidth", {
         set: function (value) {
-            if (value)
-                this.innerHandleWidth = value;
-            else
-                this.innerHandleWidth = "auto";
+            this.innerHandleWidth = (typeof (value) !== "undefined") ? value : "auto";
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(JWBootstrapSwitchDirective.prototype, "setLabelWidth", {
         set: function (value) {
-            if (value)
-                this.innerLabelWidth = value;
-            else
-                this.innerLabelWidth = "auto";
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(JWBootstrapSwitchDirective.prototype, "setBaseClass", {
-        set: function (value) {
-            if (value)
-                this.baseClass = value;
-            else
-                this.baseClass = "bootstrap-switch";
+            this.innerLabelWidth = (typeof (value) !== "undefined") ? value : "auto";
         },
         enumerable: true,
         configurable: true
@@ -457,6 +446,16 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], JWBootstrapSwitchDirective.prototype, "onMouseLeave", null);
 __decorate([
+    core_1.Input('switch-base-class'),
+    __metadata("design:type", String),
+    __metadata("design:paramtypes", [String])
+], JWBootstrapSwitchDirective.prototype, "setBaseClass", null);
+__decorate([
+    core_1.Input('switch-wrapper-class'),
+    __metadata("design:type", String),
+    __metadata("design:paramtypes", [String])
+], JWBootstrapSwitchDirective.prototype, "setWrapperClass", null);
+__decorate([
     core_1.Input('switch-off-text'),
     __metadata("design:type", String),
     __metadata("design:paramtypes", [String])
@@ -513,24 +512,19 @@ __decorate([
 ], JWBootstrapSwitchDirective.prototype, "setInverse", null);
 __decorate([
     core_1.Input('switch-handle-width'),
-    __metadata("design:type", Number),
-    __metadata("design:paramtypes", [Number])
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
 ], JWBootstrapSwitchDirective.prototype, "setHandleWidth", null);
 __decorate([
     core_1.Input('switch-label-width'),
-    __metadata("design:type", Number),
-    __metadata("design:paramtypes", [Number])
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
 ], JWBootstrapSwitchDirective.prototype, "setLabelWidth", null);
-__decorate([
-    core_1.Input('switch-base-class'),
-    __metadata("design:type", String),
-    __metadata("design:paramtypes", [String])
-], JWBootstrapSwitchDirective.prototype, "setBaseClass", null);
 JWBootstrapSwitchDirective = __decorate([
     core_1.Component({
         selector: 'bSwitch',
         outputs: ['value'],
-        template: "<div class=\"{{ getWrapperClasses() }}\" [style.width]=\" (handleWidth  + (labelWidth + 9) ) +'px'\"  >\n                    <div class=\"{{ baseClass }}-container \"\n                        [style.width]=\" ((handleWidth * 2) + labelWidth + 9) +'px'\"\n                        [style.margin-left]=\"getLabelMarginLeft()\">\n                        <span class=\"{{ (inverse) ? getOffClasses() : getOnClasses() }}\" >{{ (inverse) ? offText : onText }}</span>\n                        <span class=\"{{ baseClass }}-label\">&nbsp;{{ labelText }}</span>\n                        <span class=\"{{ (inverse) ? getOnClasses() : getOffClasses() }}\" >{{ (inverse) ? onText : offText }}</span>\n                        <input type=\"checkbox\" [(ngModel)]=\"value\" [disabled]=\"disabled\" (focus)=\"onFocus()\" (blur)=\"onBlur()\" >\n                    </div>\n                </div>",
+        template: "<div class=\"{{ getWrapperClasses() }}\" [style.width]=\" (handleWidth  + (labelWidth + 9) ) +'px'\"  >\n                    <div class=\"{{ baseClass }}-container \"\n                        [style.width]=\" ((handleWidth * 2) + labelWidth + 9) +'px'\"\n                        [style.margin-left]=\"getLabelMarginLeft()\">\n                        <span class=\"{{ (inverse) ? getOffClasses() : getOnClasses() }}\" >{{ (inverse) ? offText : onText }}</span>\n                        <span class=\"{{ baseClass }}-label\">&nbsp;{{ labelText }}</span>\n                        <span class=\"{{ (inverse) ? getOnClasses() : getOffClasses() }}\" >{{ (inverse) ? onText : offText }}</span>\n                        <input type=\"checkbox\" [(ngModel)]=\"value\" [readonly]=\"readonly\" [disabled]=\"disabled\" (focus)=\"onFocus()\" (blur)=\"onBlur()\" >\n                    </div>\n                </div>",
         providers: [CUSTOM_INPUT]
     }),
     __metadata("design:paramtypes", [core_1.ElementRef, core_1.NgZone])

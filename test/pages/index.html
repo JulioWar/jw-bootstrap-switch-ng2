@@ -7,7 +7,7 @@
         <div class="col-md-4">
             <h4>State</h4>
             <p>
-                <bSwitch [(ngModel)]="state" (onChangeState)="onChange($event)"></bSwitch>
+                <bSwitch [(ngModel)]="state"></bSwitch>
             </p>
             <div class="btn-group">
                 <button class="btn btn-default" (click)="state = !state">Toggle</button>
@@ -164,6 +164,7 @@
                         [switch-handle-width]="handleWidth">
                 </bSwitch>
             </p>
+            <input type="number" min="0" class="form-control" [(ngModel)]="labelWidth">
         </div>
     </div>
 </div>

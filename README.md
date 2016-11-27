@@ -1,4 +1,6 @@
 # jw-bootstrap-switch-ng2
+[![NPM](https://nodei.co/npm/jw-bootstrap-switch-ng2.png?compact=true)](https://www.npmjs.com/package/jw-bootstrap-switch-ng2)
+
 Angular directive for Bootstrap Switch. Useful to make a checkbox more entertaining.
 >**Notes:**
 >Written with typescript and javascript, without JQuery.
@@ -18,8 +20,7 @@ CDN:
 ```html
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/css/bootstrap3/bootstrap-switch.css">
 ```
-Or download from the official page
-<a href="http://www.bootstrap-switch.org/" target="_blank">here</a>.
+Or download from the official page [here](http://www.bootstrap-switch.org/)
 
 
 Add JWBootstrapSwitchModule to your list of modules imports:
@@ -63,6 +64,8 @@ You can then use the directive in your templates:
   selector: 'app',
   template: `
   <bSwitch
+          [switch-base-class]="baseClass"
+          [switch-wrapper-class]="wrapperClass"
           [switch-label-width]="labelWidth"
           [switch-label-text]="labelText"
           [switch-off-text]="offText"
@@ -88,18 +91,20 @@ export class AppComponent {}
 
 | Attribute | Description | Type | Arguments |
 |-----------|:-----------|:-------:|:--------:|
-|`switch-base-class`| Define the css class for the checkbox's style. | string | |
-|`switch-label-width`| Define the width of the `label`. | number | |
+|`switch-base-class`| Global class prefix. | string | |
+|`switch-wrapper-class`| Container element class(es). | string | |
+|`switch-label-width`| Define the width of the `label`. | number or string 'auto' | |
 |`switch-label-text`| Define the text of the `label`| string ||
 |`switch-on-text` | Define the text when the `ngModel` is true |string| |
 |`switch-off-text`| Define the text when the `ngModel` is false | string ||
 |`switch-on-color`| Define the class to give style to the `ngModel` equals to `ON` or `true` | string | `primary,info,success,warning,default`|
 |`switch-off-color`| Define the class to give style to the `ngModel` equals to `OFF` or `false` | string | `primary,info,success,warning,default`|
-| `switch-size` | Define the size of the switch | string | `mini,small,normal,large`|
-| `switch-disabled`, `switch-readonly` | Define if the switch is disabled | boolean ||
-| `switch-animate` | Define if the switch is going to have animation | boolean ||
-| `switch-inverse` | Define the position of the `ON` and `OFF` section | boolean ||
-|`switch-handle-width` | Define the width of the `ON` and `OFF` section |number||
+|`switch-size` | Define the size of the switch | string | `mini,small,normal,large`|
+|`switch-disabled` | Define if the switch is disabled | boolean ||
+|`switch-readonly` | Define if the switch is readonly | boolean ||
+|`switch-animate` | Define if the switch is going to have animation | boolean ||
+|`switch-inverse` | Define the position of the `ON` and `OFF` section | boolean ||
+|`switch-handle-width` | Define the width of the `ON` and `OFF` section |number or string 'auto'||
 |`ngModel` | Variable to get the switch's value |definition| -|
 
 ## Events

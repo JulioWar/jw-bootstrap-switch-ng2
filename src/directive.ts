@@ -34,7 +34,7 @@ const CUSTOM_INPUT: any = {
                         <span class="{{ (inverse) ? getOffClasses() : getOnClasses() }}" >{{ (inverse) ? offText : onText }}</span>
                         <span class="{{ baseClass }}-label">&nbsp;{{ labelText }}</span>
                         <span class="{{ (inverse) ? getOnClasses() : getOffClasses() }}" >{{ (inverse) ? onText : offText }}</span>
-                        <input type="checkbox" [(ngModel)]="value" [disabled]="disabled" (focus)="onFocus()" (blur)="onBlur()" >
+                        <input type="checkbox" [(ngModel)]="value" [readonly]="readonly" [disabled]="disabled" (focus)="onFocus()" (blur)="onBlur()" >
                     </div>
                 </div>`,
     providers: [CUSTOM_INPUT]
@@ -56,14 +56,13 @@ export class JWBootstrapSwitchDirective implements AfterViewInit, ControlValueAc
     private onText: string = "ON";
     private offText: string = "OFF";
     private labelText: string = "";
-    private handleWidth: string|number = "auto";
-    private innerHandleWidth: string|number = "auto";
-    private labelWidth: string|number = "auto";
-    private innerLabelWidth: string|number = "auto";
+    private handleWidth: string | number = "auto";
+    private innerHandleWidth: string | number = "auto";
+    private labelWidth: string | number = "auto";
+    private innerLabelWidth: string | number = "auto";
     private baseClass: string = "bootstrap-switch";
     private wrapperClass: string = "wrapper";
 
-    private outerWidth: number = 0;
     private dragStart: number = null;
     private dragEnd: any = null;
 
@@ -153,8 +152,8 @@ export class JWBootstrapSwitchDirective implements AfterViewInit, ControlValueAc
 
     public getLabelMarginLeft(): string {
         let width = (this.inverse) ? -this.handleWidth : 0;
-        if(this.indeterminate || this.innerState === null || typeof this.innerState === "undefined") {
-            width = -(Number(this.handleWidth)/2);
+        if (this.indeterminate || this.innerState === null || typeof this.innerState === "undefined") {
+            width = -(Number(this.handleWidth) / 2);
         } else if (this.dragEnd) {
             width = this.dragEnd;
         } else if (!this.innerState) {
@@ -171,18 +170,14 @@ export class JWBootstrapSwitchDirective implements AfterViewInit, ControlValueAc
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        if (this.checkChanges(changes['setLabelText']) ||
-            this.checkChanges(changes['setOnText']) ||
-            this.checkChanges(changes['setHandleWidth']) ||
-            this.checkChanges(changes['setLabelWidth']) ||
-            this.checkChanges(changes['setOffText']) ||
-            this.checkChanges(changes['setSize'])) {
+        if (changes['setLabelText'] ||
+            changes['setOnText'] ||
+            changes['setHandleWidth'] ||
+            changes['setLabelWidth'] ||
+            changes['setOffText'] ||
+            changes['setSize']) {
             this.calculateWith();
         }
-    }
-
-    checkChanges(object: any): boolean {
-        return object && object.previousValue !== object.currentValue;
     }
 
     ngAfterViewInit() {
@@ -290,23 +285,19 @@ export class JWBootstrapSwitchDirective implements AfterViewInit, ControlValueAc
                 : self.innerHandleWidth;
 
             if (self.$label().offsetWidth < width) {
-                if(self.innerLabelWidth === "auto") {
+                if (self.innerLabelWidth === "auto") {
                     self.labelWidth = Number(width) - 13;
                 } else {
-                    self.labelWidth = (self.innerLabelWidth < width)
-                        ? width
-                        : self.innerLabelWidth;
+                    self.labelWidth = self.innerLabelWidth;
                 }
             } else {
-                if(self.innerLabelWidth === "auto") {
+                if (self.innerLabelWidth === "auto") {
                     self.labelWidth = self.$label().offsetWidth;
                 } else {
-                    self.labelWidth = (self.innerLabelWidth < self.$label().offsetWidth)
-                        ? self.$label().offsetWidth
-                        : self.innerLabelWidth;
+                    self.labelWidth = self.innerLabelWidth;
                 }
             }
-            self.outerWidth = self.$label().offsetWidth;
+
             self.handleWidth = width;
 
             self.ngZone.run(() => {
@@ -315,6 +306,14 @@ export class JWBootstrapSwitchDirective implements AfterViewInit, ControlValueAc
                 self.$off().style.width = self.handleWidth + "px";
             })
         });
+    }
+
+    @Input('switch-base-class') set setBaseClass(value: string) {
+        this.baseClass = value;
+    }
+
+    @Input('switch-wrapper-class') set setWrapperClass(value: string) {
+        this.wrapperClass = value;
     }
 
     @Input('switch-off-text') set setOffText(value: string) {
@@ -362,25 +361,12 @@ export class JWBootstrapSwitchDirective implements AfterViewInit, ControlValueAc
         this.inverse = value;
     }
 
-    @Input('switch-handle-width') set setHandleWidth(value: number) {
-        if (value)
-            this.innerHandleWidth = value;
-        else
-            this.innerHandleWidth = "auto";
+    @Input('switch-handle-width') set setHandleWidth(value: number | "auto") {
+        this.innerHandleWidth = (typeof(value) !== "undefined") ?  value : "auto";
     }
 
-    @Input('switch-label-width') set setLabelWidth(value: number) {
-        if (value)
-            this.innerLabelWidth = value;
-        else
-            this.innerLabelWidth = "auto";
-    }
-
-    @Input('switch-base-class') set setBaseClass(value: string) {
-        if (value)
-            this.baseClass = value;
-        else
-            this.baseClass = "bootstrap-switch";
+    @Input('switch-label-width') set setLabelWidth(value: number | "auto") {
+        this.innerLabelWidth = (typeof(value) !== "undefined") ?  value : "auto";
     }
 
     get value(): boolean {
@@ -388,8 +374,7 @@ export class JWBootstrapSwitchDirective implements AfterViewInit, ControlValueAc
     };
 
     set value(v: boolean) {
-        if(v === null || typeof v === "undefined")
-            this.indeterminate = true;
+        if (v === null || typeof v === "undefined") this.indeterminate = true;
         this.setStateValue(v);
     }
 
@@ -397,8 +382,8 @@ export class JWBootstrapSwitchDirective implements AfterViewInit, ControlValueAc
         if (v !== this.innerState) {
 
             this.onChangeState.emit({
-                previousValue:this.innerState,
-                currentValue:v
+                previousValue: this.innerState,
+                currentValue: v
             });
             this.innerState = v;
             this.onChangeCallback(v);
