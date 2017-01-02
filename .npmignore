@@ -1,4 +1,5 @@
 /.idea
 /typings
 /node_modules
+/test
 *.log

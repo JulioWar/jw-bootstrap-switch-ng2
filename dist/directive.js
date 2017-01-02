@@ -18,106 +18,119 @@ var CUSTOM_INPUT = {
     multi: true
 };
 var JWBootstrapSwitchDirective = (function () {
-    function JWBootstrapSwitchDirective(el, ngZone) {
-        this.el = el;
+    function JWBootstrapSwitchDirective(ngZone) {
         this.ngZone = ngZone;
-        this.innerState = false;
-        this.focused = false;
-        this.size = 'normal';
-        this.animate = true;
-        this.innerAnimate = true;
-        this.disabled = false;
-        this.readonly = false;
-        this.indeterminate = false;
-        this.inverse = false;
-        this.onColor = "primary";
-        this.offColor = "default";
-        this.onText = "ON";
-        this.offText = "OFF";
-        this.labelText = "";
-        this.handleWidth = "auto";
-        this.innerHandleWidth = "auto";
-        this.labelWidth = "auto";
-        this.innerLabelWidth = "auto";
-        this.baseClass = "bootstrap-switch";
-        this.wrapperClass = "wrapper";
-        this.dragStart = null;
-        this.dragEnd = null;
-        this.onTouchedCallback = callback;
-        this.onChangeCallback = callback;
+        // Defining Default Options for Switch
+        this._innerState = false;
+        this._focused = false;
+        this._size = 'normal';
+        this._animate = true;
+        this._innerAnimate = true;
+        this._disabled = false;
+        this._readonly = false;
+        this._indeterminate = false;
+        this._inverse = false;
+        this._onColor = "primary";
+        this._offColor = "default";
+        this._onText = "ON";
+        this._offText = "OFF";
+        this._labelText = "";
+        this._handleWidth = "auto";
+        this._innerHandleWidth = "auto";
+        this._labelWidth = "auto";
+        this._innerLabelWidth = "auto";
+        this._baseClass = "bootstrap-switch";
+        this._wrapperClass = "wrapper";
+        this._dragStart = null;
+        this._dragEnd = null;
+        this._onTouchedCallback = callback;
+        this._onChangeCallback = callback;
         this.onChangeState = new core_1.EventEmitter();
     }
-    JWBootstrapSwitchDirective.prototype.getNativeElement = function () {
-        return this.el.nativeElement;
-    };
     JWBootstrapSwitchDirective.prototype.$on = function () {
-        return this.getNativeElement().querySelector("span:first-child");
+        return this.on.nativeElement;
     };
     JWBootstrapSwitchDirective.prototype.$off = function () {
-        return this.getNativeElement().querySelector("span:nth-child(3)");
+        return this.off.nativeElement;
     };
     JWBootstrapSwitchDirective.prototype.$label = function () {
-        return this.getNativeElement().querySelector('span:nth-child(2)');
+        return this.label.nativeElement;
     };
     JWBootstrapSwitchDirective.prototype.$container = function () {
-        return this.getNativeElement().querySelector("." + this.baseClass + "-container");
+        return this.container.nativeElement;
     };
+    /**
+     * @description:  Function to set the Classes for the Wrapper Div
+     * @returns {string}
+     */
     JWBootstrapSwitchDirective.prototype.getWrapperClasses = function () {
-        var output = this.baseClass + " " + this.baseClass + "-" + this.wrapperClass;
-        if (this.focused) {
-            output += " " + this.baseClass + "-focused";
+        var output = this._baseClass + " " + this._baseClass + "-" + this._wrapperClass;
+        if (this._focused) {
+            output += " " + this._baseClass + "-_focused";
         }
-        if (this.readonly) {
-            output += " " + this.baseClass + "-readonly";
+        if (this._readonly) {
+            output += " " + this._baseClass + "-readonly";
         }
-        if (this.size != null) {
-            output += " " + this.baseClass + "-" + this.size;
+        if (this._size != null) {
+            output += " " + this._baseClass + "-" + this._size;
         }
-        if (this.innerState) {
-            output += " " + this.baseClass + "-on";
+        if (this._innerState) {
+            output += " " + this._baseClass + "-on";
         }
         else {
-            output += " " + this.baseClass + "-off";
+            output += " " + this._baseClass + "-off";
         }
-        if (this.animate) {
-            output += " " + this.baseClass + "-animate";
+        if (this._animate) {
+            output += " " + this._baseClass + "-animate";
         }
-        if (this.disabled) {
-            output += " " + this.baseClass + "-disabled";
+        if (this._disabled) {
+            output += " " + this._baseClass + "-disabled";
         }
-        if (this.indeterminate || this.innerState === null || typeof this.innerState === "undefined") {
-            output += " " + this.baseClass + "-indeterminate";
+        if (this._indeterminate || this._innerState === null || typeof this._innerState === "undefined") {
+            output += " " + this._baseClass + "-indeterminate";
         }
-        if (this.inverse) {
-            output += " " + this.baseClass + "-inverse";
+        if (this._inverse) {
+            output += " " + this._baseClass + "-inverse";
         }
         return output;
     };
+    /**
+     * @description Function to set the css classes for #on
+     * @returns {string}
+     */
     JWBootstrapSwitchDirective.prototype.getOnClasses = function () {
-        var output = this.baseClass + "-handle-on";
-        if (this.onColor) {
-            output += " " + this.baseClass + "-" + this.onColor;
+        var output = this._baseClass + "-handle-on";
+        if (this._onColor) {
+            output += " " + this._baseClass + "-" + this._onColor;
         }
         return output;
     };
+    /**
+     * @description Function to set the css classes for #off
+     * @returns {string}
+     */
     JWBootstrapSwitchDirective.prototype.getOffClasses = function () {
-        var output = this.baseClass + "-handle-off";
-        if (this.offColor) {
-            output += " " + this.baseClass + "-" + this.offColor;
+        var output = this._baseClass + "-handle-off";
+        if (this._offColor) {
+            output += " " + this._baseClass + "-" + this._offColor;
         }
         return output;
     };
+    /**
+     * @description  Function set the marging of the #label when change the state
+     * @returns {string}
+     */
     JWBootstrapSwitchDirective.prototype.getLabelMarginLeft = function () {
-        var width = (this.inverse) ? -this.handleWidth : 0;
-        if (this.indeterminate || this.innerState === null || typeof this.innerState === "undefined") {
-            width = -(Number(this.handleWidth) / 2);
+        var width = (this._inverse) ? -this._handleWidth : 0;
+        if (this._indeterminate || this._innerState === null || typeof this._innerState === "undefined") {
+            width = -(Number(this._handleWidth) / 2);
         }
-        else if (this.dragEnd) {
-            width = this.dragEnd;
+        else if (this._dragEnd) {
+            width = this._dragEnd;
         }
-        else if (!this.innerState) {
-            if (!this.inverse) {
-                width = -this.handleWidth;
+        else if (!this._innerState) {
+            if (!this._inverse) {
+                width = -this._handleWidth;
             }
             else {
                 width = 0;
@@ -132,58 +145,58 @@ var JWBootstrapSwitchDirective = (function () {
             changes['setLabelWidth'] ||
             changes['setOffText'] ||
             changes['setSize']) {
-            this.calculateWith();
+            this.calculateWith(true);
         }
     };
     JWBootstrapSwitchDirective.prototype.ngAfterViewInit = function () {
         this.calculateWith();
     };
-    JWBootstrapSwitchDirective.prototype.onClick = function (ev) {
-        if (!this.disabled && !this.readonly && !this.dragEnd) {
-            this.setStateValue(!this.innerState);
+    JWBootstrapSwitchDirective.prototype.onClick = function () {
+        if (!this._disabled && !this._readonly && !this._dragEnd) {
+            this.setStateValue(!this._innerState);
         }
-        else if (this.dragEnd) {
-            this.dragEnd = null;
+        else if (this._dragEnd) {
+            this._dragEnd = null;
         }
     };
     JWBootstrapSwitchDirective.prototype.onDragStart = function (e) {
         if (e.target === this.$label()) {
-            if (this.dragStart || this.disabled || this.readonly) {
+            if (this._dragStart || this._disabled || this._readonly) {
                 return;
             }
             e.preventDefault();
             e.stopPropagation();
-            this.dragStart = (e.pageX || e.touches[0].pageX) - parseInt(this.$container().style.marginLeft, 10);
-            if (this.animate) {
-                this.animate = !this.animate;
+            this._dragStart = (e.pageX || e.touches[0].pageX) - parseInt(this.$container().style.marginLeft, 10);
+            if (this._animate) {
+                this._animate = !this._animate;
             }
         }
     };
     JWBootstrapSwitchDirective.prototype.onDragMove = function (e) {
-        if (this.dragStart) {
+        if (this._dragStart) {
             e.preventDefault();
-            var difference = (e.pageX || e.touches[0].pageX) - this.dragStart;
-            if (difference < -Number(this.handleWidth) || difference > 0) {
+            var difference = (e.pageX || e.touches[0].pageX) - this._dragStart;
+            if (difference < -Number(this._handleWidth) || difference > 0) {
                 return;
             }
-            this.dragEnd = difference;
+            this._dragEnd = difference;
         }
     };
     JWBootstrapSwitchDirective.prototype.onDragEnd = function (e, removeDragEnd) {
         if (removeDragEnd === void 0) { removeDragEnd = false; }
-        if (this.dragStart) {
+        if (this._dragStart) {
             e.preventDefault();
             e.stopPropagation();
-            if (this.dragEnd) {
-                var state = this.dragEnd > -(Number(this.handleWidth) / 2);
-                this.setStateValue((this.inverse) ? !state : state);
+            if (this._dragEnd) {
+                var state = this._dragEnd > -(Number(this._handleWidth) / 2);
+                this.setStateValue((this._inverse) ? !state : state);
             }
-            this.dragStart = null;
+            this._dragStart = null;
             if (removeDragEnd) {
-                this.dragEnd = null;
+                this._dragEnd = null;
             }
-            if (this.innerAnimate) {
-                this.animate = true;
+            if (this._innerAnimate) {
+                this._animate = true;
             }
         }
     };
@@ -209,76 +222,91 @@ var JWBootstrapSwitchDirective = (function () {
         this.onDragEnd(e, true);
     };
     JWBootstrapSwitchDirective.prototype.onFocus = function () {
-        this.focused = true;
+        this._focused = true;
     };
     JWBootstrapSwitchDirective.prototype.onBlur = function () {
-        this.focused = false;
-        this.onTouchedCallback();
+        this._focused = false;
+        this._onTouchedCallback();
     };
-    JWBootstrapSwitchDirective.prototype.calculateWith = function () {
+    /**
+     * @description Function to make recalculate the size of the elements when options change
+     * @param disableAnimation
+     */
+    JWBootstrapSwitchDirective.prototype.calculateWith = function (disableAnimation) {
+        var _this = this;
+        if (disableAnimation === void 0) { disableAnimation = false; }
         var self = this;
+        if (disableAnimation && this._innerAnimate) {
+            this._animate = false;
+        }
         setTimeout(function (_) {
             self.$on().style.width = "auto";
             self.$off().style.width = "auto";
             self.$label().style.width = "auto";
-            var width = (self.innerHandleWidth === "auto")
+            var width = (self._innerHandleWidth === "auto")
                 ? Math.max(self.$on().offsetWidth, self.$off().offsetWidth)
-                : self.innerHandleWidth;
+                : self._innerHandleWidth;
             if (self.$label().offsetWidth < width) {
-                if (self.innerLabelWidth === "auto") {
-                    self.labelWidth = Number(width) - 13;
+                if (self._innerLabelWidth === "auto") {
+                    self._labelWidth = Number(width) - 13;
                 }
                 else {
-                    self.labelWidth = self.innerLabelWidth;
+                    self._labelWidth = self._innerLabelWidth;
                 }
             }
             else {
-                if (self.innerLabelWidth === "auto") {
-                    self.labelWidth = self.$label().offsetWidth;
+                if (self._innerLabelWidth === "auto") {
+                    self._labelWidth = self.$label().offsetWidth;
                 }
                 else {
-                    self.labelWidth = self.innerLabelWidth;
+                    self._labelWidth = self._innerLabelWidth;
                 }
             }
-            self.handleWidth = width;
+            self._handleWidth = width;
             self.ngZone.run(function () {
-                self.$label().style.width = self.labelWidth + "px";
-                self.$on().style.width = self.handleWidth + "px";
-                self.$off().style.width = self.handleWidth + "px";
+                self.$label().style.width = self._labelWidth + "px";
+                self.$on().style.width = self._handleWidth + "px";
+                self.$off().style.width = self._handleWidth + "px";
+                setTimeout(function () {
+                    if (disableAnimation && _this._innerAnimate) {
+                        _this._animate = true;
+                    }
+                });
             });
         });
     };
     Object.defineProperty(JWBootstrapSwitchDirective.prototype, "setBaseClass", {
+        //Functions to set inputs and the private variables of the Switch
         set: function (value) {
-            this.baseClass = value;
+            this._baseClass = value;
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(JWBootstrapSwitchDirective.prototype, "setWrapperClass", {
         set: function (value) {
-            this.wrapperClass = value;
+            this._wrapperClass = value;
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(JWBootstrapSwitchDirective.prototype, "setOffText", {
         set: function (value) {
-            this.offText = (value) ? value : "OFF";
+            this._offText = (value) ? value : "OFF";
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(JWBootstrapSwitchDirective.prototype, "setLabelText", {
         set: function (value) {
-            this.labelText = value;
+            this._labelText = value;
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(JWBootstrapSwitchDirective.prototype, "setOnText", {
         set: function (value) {
-            this.onText = (value) ? value : "ON";
+            this._onText = (value) ? value : "ON";
         },
         enumerable: true,
         configurable: true
@@ -286,15 +314,15 @@ var JWBootstrapSwitchDirective = (function () {
     Object.defineProperty(JWBootstrapSwitchDirective.prototype, "setSize", {
         set: function (value) {
             if (value)
-                this.size = value;
+                this._size = value;
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(JWBootstrapSwitchDirective.prototype, "setAnimate", {
         set: function (value) {
-            this.animate = value;
-            this.innerAnimate = value;
+            this._animate = value;
+            this._innerAnimate = value;
         },
         enumerable: true,
         configurable: true
@@ -302,7 +330,7 @@ var JWBootstrapSwitchDirective = (function () {
     Object.defineProperty(JWBootstrapSwitchDirective.prototype, "setOnColor", {
         set: function (value) {
             if (value)
-                this.onColor = value;
+                this._onColor = value;
         },
         enumerable: true,
         configurable: true
@@ -310,60 +338,60 @@ var JWBootstrapSwitchDirective = (function () {
     Object.defineProperty(JWBootstrapSwitchDirective.prototype, "setOffColor", {
         set: function (value) {
             if (value)
-                this.offColor = value;
+                this._offColor = value;
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(JWBootstrapSwitchDirective.prototype, "setDisabled", {
         set: function (value) {
-            this.disabled = value;
+            this._disabled = value;
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(JWBootstrapSwitchDirective.prototype, "setReadOnly", {
         set: function (value) {
-            this.readonly = value;
+            this._readonly = value;
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(JWBootstrapSwitchDirective.prototype, "setIndeterminate", {
         set: function (value) {
-            this.indeterminate = value;
+            this._indeterminate = value;
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(JWBootstrapSwitchDirective.prototype, "setInverse", {
         set: function (value) {
-            this.inverse = value;
+            this._inverse = value;
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(JWBootstrapSwitchDirective.prototype, "setHandleWidth", {
         set: function (value) {
-            this.innerHandleWidth = (typeof (value) !== "undefined") ? value : "auto";
+            this._innerHandleWidth = (typeof (value) !== "undefined") ? value : "auto";
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(JWBootstrapSwitchDirective.prototype, "setLabelWidth", {
         set: function (value) {
-            this.innerLabelWidth = (typeof (value) !== "undefined") ? value : "auto";
+            this._innerLabelWidth = (typeof (value) !== "undefined") ? value : "auto";
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(JWBootstrapSwitchDirective.prototype, "value", {
         get: function () {
-            return this.innerState;
+            return this._innerState;
         },
         set: function (v) {
             if (v === null || typeof v === "undefined")
-                this.indeterminate = true;
+                this._indeterminate = true;
             this.setStateValue(v);
         },
         enumerable: true,
@@ -371,25 +399,25 @@ var JWBootstrapSwitchDirective = (function () {
     });
     ;
     JWBootstrapSwitchDirective.prototype.setStateValue = function (v) {
-        if (v !== this.innerState) {
+        if (v !== this._innerState) {
             this.onChangeState.emit({
-                previousValue: this.innerState,
+                previousValue: this._innerState,
                 currentValue: v
             });
-            this.innerState = v;
-            this.onChangeCallback(v);
+            this._innerState = v;
+            this._onChangeCallback(v);
         }
     };
     JWBootstrapSwitchDirective.prototype.writeValue = function (value) {
-        if (value !== this.innerState) {
-            this.innerState = value;
+        if (value !== this._innerState) {
+            this._innerState = value;
         }
     };
     JWBootstrapSwitchDirective.prototype.registerOnChange = function (fn) {
-        this.onChangeCallback = fn;
+        this._onChangeCallback = fn;
     };
     JWBootstrapSwitchDirective.prototype.registerOnTouched = function (fn) {
-        this.onTouchedCallback = fn;
+        this._onTouchedCallback = fn;
     };
     return JWBootstrapSwitchDirective;
 }());
@@ -398,9 +426,25 @@ __decorate([
     __metadata("design:type", core_1.EventEmitter)
 ], JWBootstrapSwitchDirective.prototype, "onChangeState", void 0);
 __decorate([
+    core_1.ViewChild("container"),
+    __metadata("design:type", core_1.ElementRef)
+], JWBootstrapSwitchDirective.prototype, "container", void 0);
+__decorate([
+    core_1.ViewChild("on"),
+    __metadata("design:type", core_1.ElementRef)
+], JWBootstrapSwitchDirective.prototype, "on", void 0);
+__decorate([
+    core_1.ViewChild("label"),
+    __metadata("design:type", core_1.ElementRef)
+], JWBootstrapSwitchDirective.prototype, "label", void 0);
+__decorate([
+    core_1.ViewChild("off"),
+    __metadata("design:type", core_1.ElementRef)
+], JWBootstrapSwitchDirective.prototype, "off", void 0);
+__decorate([
     core_1.HostListener('click'),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], JWBootstrapSwitchDirective.prototype, "onClick", null);
 __decorate([
@@ -524,10 +568,10 @@ JWBootstrapSwitchDirective = __decorate([
     core_1.Component({
         selector: 'bSwitch',
         outputs: ['value'],
-        template: "<div class=\"{{ getWrapperClasses() }}\" [style.width]=\" (handleWidth  + (labelWidth + 9) ) +'px'\"  >\n                    <div class=\"{{ baseClass }}-container \"\n                        [style.width]=\" ((handleWidth * 2) + labelWidth + 9) +'px'\"\n                        [style.margin-left]=\"getLabelMarginLeft()\">\n                        <span class=\"{{ (inverse) ? getOffClasses() : getOnClasses() }}\" >{{ (inverse) ? offText : onText }}</span>\n                        <span class=\"{{ baseClass }}-label\">&nbsp;{{ labelText }}</span>\n                        <span class=\"{{ (inverse) ? getOnClasses() : getOffClasses() }}\" >{{ (inverse) ? onText : offText }}</span>\n                        <input type=\"checkbox\" [(ngModel)]=\"value\" [readonly]=\"readonly\" [disabled]=\"disabled\" (focus)=\"onFocus()\" (blur)=\"onBlur()\" >\n                    </div>\n                </div>",
+        template: "<div class=\"{{ getWrapperClasses() }}\" [style.width]=\" (_handleWidth  + (_labelWidth + 9) ) +'px'\"  >\n                    <div #container class=\"{{ _baseClass }}-container \"\n                        [style.width]=\" ((_handleWidth * 2) + _labelWidth + 9) +'px'\"\n                        [style.margin-left]=\"getLabelMarginLeft()\">\n                        <span #on class=\"{{ (inverse) ? getOffClasses() : getOnClasses() }}\" >{{ (_inverse) ? _offText : _onText }}</span>\n                        <span #label class=\"{{ _baseClass }}-label\">&nbsp;{{ _labelText }}</span>\n                        <span #off class=\"{{ (inverse) ? getOnClasses() : getOffClasses() }}\" >{{ (_inverse) ? _onText : _offText }}</span>\n                        <input type=\"checkbox\" [(ngModel)]=\"value\" [readonly]=\"_readonly\" [disabled]=\"_disabled\" (focus)=\"onFocus()\" (blur)=\"onBlur()\" >\n                    </div>\n                </div>",
         providers: [CUSTOM_INPUT]
     }),
-    __metadata("design:paramtypes", [core_1.ElementRef, core_1.NgZone])
+    __metadata("design:paramtypes", [core_1.NgZone])
 ], JWBootstrapSwitchDirective);
 exports.JWBootstrapSwitchDirective = JWBootstrapSwitchDirective;
 //# sourceMappingURL=directive.js.map

@@ -8,26 +8,26 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
+var core_1 = require("@angular/core");
 var directive_1 = require("./directive");
 var forms_1 = require("@angular/forms");
 var JWBootstrapSwitchModule = (function () {
     function JWBootstrapSwitchModule() {
     }
-    JWBootstrapSwitchModule = __decorate([
-        core_1.NgModule({
-            imports: [
-                forms_1.FormsModule
-            ],
-            declarations: [directive_1.JWBootstrapSwitchDirective],
-            exports: [
-                directive_1.JWBootstrapSwitchDirective,
-                forms_1.FormsModule
-            ]
-        }), 
-        __metadata('design:paramtypes', [])
-    ], JWBootstrapSwitchModule);
     return JWBootstrapSwitchModule;
 }());
+JWBootstrapSwitchModule = __decorate([
+    core_1.NgModule({
+        imports: [
+            forms_1.FormsModule
+        ],
+        declarations: [directive_1.JWBootstrapSwitchDirective],
+        exports: [
+            directive_1.JWBootstrapSwitchDirective,
+            forms_1.FormsModule
+        ]
+    }),
+    __metadata("design:paramtypes", [])
+], JWBootstrapSwitchModule);
 exports.JWBootstrapSwitchModule = JWBootstrapSwitchModule;
 //# sourceMappingURL=index.js.map

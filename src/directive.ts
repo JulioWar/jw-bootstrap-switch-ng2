@@ -8,7 +8,8 @@ import {
     forwardRef,
     SimpleChanges,
     NgZone,
-    EventEmitter
+    EventEmitter,
+    ViewChild
 } from '@angular/core';
 import {
     ControlValueAccessor,
@@ -27,14 +28,14 @@ const CUSTOM_INPUT: any = {
 @Component({
     selector: 'bSwitch',
     outputs: ['value'],
-    template: `<div class="{{ getWrapperClasses() }}" [style.width]=" (handleWidth  + (labelWidth + 9) ) +'px'"  >
-                    <div class="{{ baseClass }}-container "
-                        [style.width]=" ((handleWidth * 2) + labelWidth + 9) +'px'"
+    template: `<div class="{{ getWrapperClasses() }}" [style.width]=" (_handleWidth  + (_labelWidth + 9) ) +'px'"  >
+                    <div #container class="{{ _baseClass }}-container "
+                        [style.width]=" ((_handleWidth * 2) + _labelWidth + 9) +'px'"
                         [style.margin-left]="getLabelMarginLeft()">
-                        <span class="{{ (inverse) ? getOffClasses() : getOnClasses() }}" >{{ (inverse) ? offText : onText }}</span>
-                        <span class="{{ baseClass }}-label">&nbsp;{{ labelText }}</span>
-                        <span class="{{ (inverse) ? getOnClasses() : getOffClasses() }}" >{{ (inverse) ? onText : offText }}</span>
-                        <input type="checkbox" [(ngModel)]="value" [readonly]="readonly" [disabled]="disabled" (focus)="onFocus()" (blur)="onBlur()" >
+                        <span #on class="{{ (inverse) ? getOffClasses() : getOnClasses() }}" >{{ (_inverse) ? _offText : _onText }}</span>
+                        <span #label class="{{ _baseClass }}-label">&nbsp;{{ _labelText }}</span>
+                        <span #off class="{{ (inverse) ? getOnClasses() : getOffClasses() }}" >{{ (_inverse) ? _onText : _offText }}</span>
+                        <input type="checkbox" [(ngModel)]="value" [readonly]="_readonly" [disabled]="_disabled" (focus)="onFocus()" (blur)="onBlur()" >
                     </div>
                 </div>`,
     providers: [CUSTOM_INPUT]
@@ -42,123 +43,143 @@ const CUSTOM_INPUT: any = {
 
 export class JWBootstrapSwitchDirective implements AfterViewInit, ControlValueAccessor {
 
-    private innerState: boolean = false;
-    private focused: boolean = false;
-    private size: any = 'normal';
-    private animate: boolean = true;
-    private innerAnimate: boolean = true;
-    private disabled: boolean = false;
-    private readonly: boolean = false;
-    private indeterminate: boolean = false;
-    private inverse: boolean = false;
-    private onColor: string = "primary";
-    private offColor: string = "default";
-    private onText: string = "ON";
-    private offText: string = "OFF";
-    private labelText: string = "";
-    private handleWidth: string | number = "auto";
-    private innerHandleWidth: string | number = "auto";
-    private labelWidth: string | number = "auto";
-    private innerLabelWidth: string | number = "auto";
-    private baseClass: string = "bootstrap-switch";
-    private wrapperClass: string = "wrapper";
+    // Defining Default Options for Switch
+    private _innerState: boolean = false;
+    private _focused: boolean = false;
+    private _size: any = 'normal';
+    private _animate: boolean = true;
+    private _innerAnimate: boolean = true;
+    private _disabled: boolean = false;
+    private _readonly: boolean = false;
+    private _indeterminate: boolean = false;
+    private _inverse: boolean = false;
+    private _onColor: string = "primary";
+    private _offColor: string = "default";
+    private _onText: string = "ON";
+    private _offText: string = "OFF";
+    private _labelText: string = "";
+    private _handleWidth: string | number = "auto";
+    private _innerHandleWidth: string | number = "auto";
+    private _labelWidth: string | number = "auto";
+    private _innerLabelWidth: string | number = "auto";
+    private _baseClass: string = "bootstrap-switch";
+    private _wrapperClass: string = "wrapper";
 
-    private dragStart: number = null;
-    private dragEnd: any = null;
+    private _dragStart: number = null;
+    private _dragEnd: any = null;
 
-    private onTouchedCallback: () => void = callback;
-    private onChangeCallback: (_: any) => void = callback;
+    private _onTouchedCallback: () => void = callback;
+    private _onChangeCallback: (_: any) => void = callback;
 
     @Output() onChangeState: EventEmitter<any> = new EventEmitter<any>();
 
-    private getNativeElement() {
-        return this.el.nativeElement;
-    }
+
+    // Defining DOM Elements
+    @ViewChild("container") container:ElementRef;
+    @ViewChild("on") on:ElementRef;
+    @ViewChild("label") label:ElementRef;
+    @ViewChild("off") off:ElementRef;
 
     private $on(): any {
-        return this.getNativeElement().querySelector("span:first-child")
+        return this.on.nativeElement
     }
 
     private $off(): any {
-        return this.getNativeElement().querySelector("span:nth-child(3)");
+        return this.off.nativeElement
     }
 
     private $label(): any {
-        return this.getNativeElement().querySelector('span:nth-child(2)');
+        return this.label.nativeElement;
     }
 
     private $container(): any {
-        return this.getNativeElement().querySelector("." + this.baseClass + "-container");
+        return this.container.nativeElement;
     }
 
+    /**
+     * @description:  Function to set the Classes for the Wrapper Div
+     * @returns {string}
+     */
     public getWrapperClasses() {
-        let output: string = this.baseClass + " " + this.baseClass + "-" + this.wrapperClass;
+        let output: string = this._baseClass + " " + this._baseClass + "-" + this._wrapperClass;
 
-        if (this.focused) {
-            output += " " + this.baseClass + "-focused";
+        if (this._focused) {
+            output += " " + this._baseClass + "-_focused";
         }
-        if (this.readonly) {
-            output += " " + this.baseClass + "-readonly";
-        }
-
-        if (this.size != null) {
-            output += " " + this.baseClass + "-" + this.size;
+        if (this._readonly) {
+            output += " " + this._baseClass + "-readonly";
         }
 
-        if (this.innerState) {
-            output += " " + this.baseClass + "-on";
+        if (this._size != null) {
+            output += " " + this._baseClass + "-" + this._size;
+        }
+
+        if (this._innerState) {
+            output += " " + this._baseClass + "-on";
         } else {
-            output += " " + this.baseClass + "-off";
+            output += " " + this._baseClass + "-off";
         }
 
-        if (this.animate) {
-            output += " " + this.baseClass + "-animate";
+        if (this._animate) {
+            output += " " + this._baseClass + "-animate";
         }
 
-        if (this.disabled) {
-            output += " " + this.baseClass + "-disabled";
+        if (this._disabled) {
+            output += " " + this._baseClass + "-disabled";
         }
 
-        if (this.indeterminate || this.innerState === null || typeof this.innerState === "undefined") {
-            output += " " + this.baseClass + "-indeterminate";
+        if (this._indeterminate || this._innerState === null || typeof this._innerState === "undefined") {
+            output += " " + this._baseClass + "-indeterminate";
         }
 
-        if (this.inverse) {
-            output += " " + this.baseClass + "-inverse";
+        if (this._inverse) {
+            output += " " + this._baseClass + "-inverse";
         }
 
         return output
     }
 
+    /**
+     * @description Function to set the css classes for #on
+     * @returns {string}
+     */
     public getOnClasses(): string {
-        let output: string = this.baseClass + "-handle-on";
+        let output: string = this._baseClass + "-handle-on";
 
-        if (this.onColor) {
-            output += " " + this.baseClass + "-" + this.onColor;
+        if (this._onColor) {
+            output += " " + this._baseClass + "-" + this._onColor;
         }
 
         return output
     }
 
+    /**
+     * @description Function to set the css classes for #off
+     * @returns {string}
+     */
     public getOffClasses(): string {
-        let output: string = this.baseClass + "-handle-off";
+        let output: string = this._baseClass + "-handle-off";
 
-        if (this.offColor) {
-            output += " " + this.baseClass + "-" + this.offColor;
+        if (this._offColor) {
+            output += " " + this._baseClass + "-" + this._offColor;
         }
 
         return output
     }
 
+    /**
+     * @description  Function set the marging of the #label when change the state
+     * @returns {string}
+     */
     public getLabelMarginLeft(): string {
-        let width = (this.inverse) ? -this.handleWidth : 0;
-        if (this.indeterminate || this.innerState === null || typeof this.innerState === "undefined") {
-            width = -(Number(this.handleWidth) / 2);
-        } else if (this.dragEnd) {
-            width = this.dragEnd;
-        } else if (!this.innerState) {
-            if (!this.inverse) {
-                width = -this.handleWidth;
+        let width = (this._inverse) ? -this._handleWidth : 0;
+        if (this._indeterminate || this._innerState === null || typeof this._innerState === "undefined") {
+            width = -(Number(this._handleWidth) / 2);
+        } else if (this._dragEnd) {
+            width = this._dragEnd;
+        } else if (!this._innerState) {
+            if (!this._inverse) {
+                width = -this._handleWidth;
             } else {
                 width = 0;
             }
@@ -166,7 +187,7 @@ export class JWBootstrapSwitchDirective implements AfterViewInit, ControlValueAc
         return width + "px";
     }
 
-    constructor(private el: ElementRef, private ngZone: NgZone) {
+    constructor(private ngZone: NgZone) {
     }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -176,7 +197,7 @@ export class JWBootstrapSwitchDirective implements AfterViewInit, ControlValueAc
             changes['setLabelWidth'] ||
             changes['setOffText'] ||
             changes['setSize']) {
-            this.calculateWith();
+            this.calculateWith(true);
         }
     }
 
@@ -184,53 +205,53 @@ export class JWBootstrapSwitchDirective implements AfterViewInit, ControlValueAc
         this.calculateWith();
     }
 
-    @HostListener('click') onClick(ev) {
-        if (!this.disabled && !this.readonly && !this.dragEnd) {
-            this.setStateValue(!this.innerState);
-        } else if (this.dragEnd) {
-            this.dragEnd = null;
+    @HostListener('click') onClick() {
+        if (!this._disabled && !this._readonly && !this._dragEnd) {
+            this.setStateValue(!this._innerState);
+        } else if (this._dragEnd) {
+            this._dragEnd = null;
         }
     }
 
     private onDragStart(e): void {
         if (e.target === this.$label()) {
-            if (this.dragStart || this.disabled || this.readonly) {
+            if (this._dragStart || this._disabled || this._readonly) {
                 return;
             }
             e.preventDefault();
             e.stopPropagation();
-            this.dragStart = (e.pageX || e.touches[0].pageX) - parseInt(this.$container().style.marginLeft, 10);
-            if (this.animate) {
-                this.animate = !this.animate;
+            this._dragStart = (e.pageX || e.touches[0].pageX) - parseInt(this.$container().style.marginLeft, 10);
+            if (this._animate) {
+                this._animate = !this._animate;
             }
         }
     }
 
     private onDragMove(e): void {
-        if (this.dragStart) {
+        if (this._dragStart) {
             e.preventDefault();
-            let difference = (e.pageX || e.touches[0].pageX) - this.dragStart;
-            if (difference < -Number(this.handleWidth) || difference > 0) {
+            let difference = (e.pageX || e.touches[0].pageX) - this._dragStart;
+            if (difference < -Number(this._handleWidth) || difference > 0) {
                 return;
             }
-            this.dragEnd = difference;
+            this._dragEnd = difference;
         }
     }
 
     private onDragEnd(e: Event, removeDragEnd: boolean = false) {
-        if (this.dragStart) {
+        if (this._dragStart) {
             e.preventDefault();
             e.stopPropagation();
-            if (this.dragEnd) {
-                let state = this.dragEnd > -(Number(this.handleWidth) / 2);
-                this.setStateValue((this.inverse) ? !state : state);
+            if (this._dragEnd) {
+                let state = this._dragEnd > -(Number(this._handleWidth) / 2);
+                this.setStateValue((this._inverse) ? !state : state);
             }
-            this.dragStart = null;
+            this._dragStart = null;
             if (removeDragEnd) {
-                this.dragEnd = null;
+                this._dragEnd = null;
             }
-            if (this.innerAnimate) {
-                this.animate = true;
+            if (this._innerAnimate) {
+                this._animate = true;
             }
         }
     }
@@ -264,144 +285,156 @@ export class JWBootstrapSwitchDirective implements AfterViewInit, ControlValueAc
     }
 
     onFocus() {
-        this.focused = true;
+        this._focused = true;
     }
 
     onBlur() {
-        this.focused = false;
-        this.onTouchedCallback();
+        this._focused = false;
+        this._onTouchedCallback();
     }
 
-    private calculateWith(): void {
+    /**
+     * @description Function to make recalculate the size of the elements when options change
+     * @param disableAnimation
+     */
+    private calculateWith(disableAnimation:boolean = false): void {
 
-        var self = this;
-
+        let self = this;
+        if(disableAnimation && this._innerAnimate) {
+            this._animate = false;
+        }
         setTimeout(_ => {
             self.$on().style.width = "auto";
             self.$off().style.width = "auto";
             self.$label().style.width = "auto";
-            let width = (self.innerHandleWidth === "auto")
+            let width = (self._innerHandleWidth === "auto")
                 ? Math.max(self.$on().offsetWidth, self.$off().offsetWidth)
-                : self.innerHandleWidth;
+                : self._innerHandleWidth;
 
             if (self.$label().offsetWidth < width) {
-                if (self.innerLabelWidth === "auto") {
-                    self.labelWidth = Number(width) - 13;
+                if (self._innerLabelWidth === "auto") {
+                    self._labelWidth = Number(width) - 13;
                 } else {
-                    self.labelWidth = self.innerLabelWidth;
+                    self._labelWidth = self._innerLabelWidth;
                 }
             } else {
-                if (self.innerLabelWidth === "auto") {
-                    self.labelWidth = self.$label().offsetWidth;
+                if (self._innerLabelWidth === "auto") {
+                    self._labelWidth = self.$label().offsetWidth;
                 } else {
-                    self.labelWidth = self.innerLabelWidth;
+                    self._labelWidth = self._innerLabelWidth;
                 }
             }
 
-            self.handleWidth = width;
+            self._handleWidth = width;
 
             self.ngZone.run(() => {
-                self.$label().style.width = self.labelWidth + "px";
-                self.$on().style.width = self.handleWidth + "px";
-                self.$off().style.width = self.handleWidth + "px";
-            })
+                self.$label().style.width = self._labelWidth + "px";
+                self.$on().style.width = self._handleWidth + "px";
+                self.$off().style.width = self._handleWidth + "px";
+                setTimeout(()=> {
+                    if(disableAnimation && this._innerAnimate) {
+                        this._animate = true;
+                    }
+                });
+            });
         });
     }
 
+    //Functions to set inputs and the private variables of the Switch
     @Input('switch-base-class') set setBaseClass(value: string) {
-        this.baseClass = value;
+        this._baseClass = value;
     }
 
     @Input('switch-wrapper-class') set setWrapperClass(value: string) {
-        this.wrapperClass = value;
+        this._wrapperClass = value;
     }
 
     @Input('switch-off-text') set setOffText(value: string) {
-        this.offText = (value) ? value : "OFF";
+        this._offText = (value) ? value : "OFF";
     }
 
     @Input('switch-label-text') set setLabelText(value: string) {
-        this.labelText = value;
+        this._labelText = value;
     }
 
     @Input('switch-on-text') set setOnText(value: string) {
-        this.onText = (value) ? value : "ON";
+        this._onText = (value) ? value : "ON";
     }
 
     @Input('switch-size') set setSize(value: string) {
-        if (value) this.size = value;
+        if (value) this._size = value;
     }
 
     @Input('switch-animate') set setAnimate(value: boolean) {
-        this.animate = value;
-        this.innerAnimate = value;
+        this._animate = value;
+        this._innerAnimate = value;
     }
 
     @Input('switch-on-color') set setOnColor(value: string) {
-        if (value) this.onColor = value;
+        if (value) this._onColor = value;
     }
 
     @Input('switch-off-color') set setOffColor(value: string) {
-        if (value) this.offColor = value;
+        if (value) this._offColor = value;
     }
 
     @Input('switch-disabled') set setDisabled(value: boolean) {
-        this.disabled = value;
+        this._disabled = value;
     }
 
     @Input('switch-readonly') set setReadOnly(value: boolean) {
-        this.readonly = value;
+        this._readonly = value;
     }
 
     @Input('switch-indeterminate') set setIndeterminate(value: boolean) {
-        this.indeterminate = value;
+        this._indeterminate = value;
     }
 
     @Input('switch-inverse') set setInverse(value: boolean) {
-        this.inverse = value;
+        this._inverse = value;
     }
 
     @Input('switch-handle-width') set setHandleWidth(value: number | "auto") {
-        this.innerHandleWidth = (typeof(value) !== "undefined") ?  value : "auto";
+        this._innerHandleWidth = (typeof(value) !== "undefined") ?  value : "auto";
     }
 
     @Input('switch-label-width') set setLabelWidth(value: number | "auto") {
-        this.innerLabelWidth = (typeof(value) !== "undefined") ?  value : "auto";
+        this._innerLabelWidth = (typeof(value) !== "undefined") ?  value : "auto";
     }
 
     get value(): boolean {
-        return this.innerState;
+        return this._innerState;
     };
 
     set value(v: boolean) {
-        if (v === null || typeof v === "undefined") this.indeterminate = true;
+        if (v === null || typeof v === "undefined") this._indeterminate = true;
         this.setStateValue(v);
     }
 
     private setStateValue(v: boolean): void {
-        if (v !== this.innerState) {
+        if (v !== this._innerState) {
 
             this.onChangeState.emit({
-                previousValue: this.innerState,
+                previousValue: this._innerState,
                 currentValue: v
             });
-            this.innerState = v;
-            this.onChangeCallback(v);
+            this._innerState = v;
+            this._onChangeCallback(v);
         }
     }
 
     writeValue(value: boolean) {
-        if (value !== this.innerState) {
-            this.innerState = value;
+        if (value !== this._innerState) {
+            this._innerState = value;
         }
     }
 
     registerOnChange(fn: any) {
-        this.onChangeCallback = fn;
+        this._onChangeCallback = fn;
     }
 
     registerOnTouched(fn: any) {
-        this.onTouchedCallback = fn;
+        this._onTouchedCallback = fn;
     }
 
 }
