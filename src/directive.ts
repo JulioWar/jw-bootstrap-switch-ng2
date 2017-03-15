@@ -213,7 +213,7 @@ export class JWBootstrapSwitchDirective implements AfterViewInit, ControlValueAc
         }
     }
 
-    private onDragStart(e): void {
+    private onDragStart(e: any): void {
         if (e.target === this.$label()) {
             if (this._dragStart || this._disabled || this._readonly) {
                 return;
@@ -227,7 +227,7 @@ export class JWBootstrapSwitchDirective implements AfterViewInit, ControlValueAc
         }
     }
 
-    private onDragMove(e): void {
+    private onDragMove(e: any): void {
         if (this._dragStart) {
             e.preventDefault();
             let difference = (e.pageX || e.touches[0].pageX) - this._dragStart;
