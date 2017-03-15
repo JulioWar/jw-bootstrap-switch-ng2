@@ -256,19 +256,19 @@ export class JWBootstrapSwitchDirective implements AfterViewInit, ControlValueAc
         }
     }
 
-    @HostListener('touchstart', ['$event']) onTouchStart(e) {
+    @HostListener('touchstart', ['$event']) onTouchStart(e: any) {
         this.onDragStart(e);
     }
 
-    @HostListener('mousedown', ['$event']) onMouseDown(e) {
+    @HostListener('mousedown', ['$event']) onMouseDown(e: any) {
         this.onDragStart(e);
     }
 
-    @HostListener('touchmove', ['$event']) onTouchMove(e) {
+    @HostListener('touchmove', ['$event']) onTouchMove(e: any) {
         this.onDragMove(e);
     }
 
-    @HostListener('mousemove', ['$event']) onMouseMove(e) {
+    @HostListener('mousemove', ['$event']) onMouseMove(e: any) {
         this.onDragMove(e);
     }
 
@@ -303,7 +303,7 @@ export class JWBootstrapSwitchDirective implements AfterViewInit, ControlValueAc
         if(disableAnimation && this._innerAnimate) {
             this._animate = false;
         }
-        setTimeout(_ => {
+        setTimeout(() => {
             self.$on().style.width = "auto";
             self.$off().style.width = "auto";
             self.$label().style.width = "auto";
