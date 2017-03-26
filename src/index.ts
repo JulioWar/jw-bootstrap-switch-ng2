@@ -3,13 +3,14 @@ import {JWBootstrapSwitchDirective} from "./directive";
 import {FormsModule} from "@angular/forms";
 
 @NgModule({
-    imports:[
+    imports: [
         FormsModule
     ],
-    declarations:[JWBootstrapSwitchDirective],
-    exports:[
+    declarations: [JWBootstrapSwitchDirective],
+    exports: [
         JWBootstrapSwitchDirective,
         FormsModule
     ]
 })
-export class JWBootstrapSwitchModule {}
+export class JWBootstrapSwitchModule {
+}

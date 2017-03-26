@@ -28,42 +28,46 @@ const CUSTOM_INPUT: any = {
 @Component({
     selector: 'bSwitch',
     outputs: ['value'],
-    template: `<div class="{{ getWrapperClasses() }}" [style.width]=" (_handleWidth  + (_labelWidth + 9) ) +'px'"  >
-                    <div #container class="{{ _baseClass }}-container "
-                        [style.width]=" ((_handleWidth * 2) + _labelWidth + 9) +'px'"
-                        [style.margin-left]="getLabelMarginLeft()">
-                        <span #on class="{{ (inverse) ? getOffClasses() : getOnClasses() }}" >{{ (_inverse) ? _offText : _onText }}</span>
-                        <span #label class="{{ _baseClass }}-label">&nbsp;{{ _labelText }}</span>
-                        <span #off class="{{ (inverse) ? getOnClasses() : getOffClasses() }}" >{{ (_inverse) ? _onText : _offText }}</span>
-                        <input type="checkbox" [(ngModel)]="value" [readonly]="_readonly" [disabled]="_disabled" (focus)="onFocus()" (blur)="onBlur()" >
-                    </div>
-                </div>`,
-    providers: [CUSTOM_INPUT]
+    providers: [CUSTOM_INPUT],
+    template: `
+        <div class="{{ getWrapperClasses() }}" [style.width]=" (handleWidth  + (labelWidth + 9) ) +'px'">
+            <div #container class="{{ baseClass }}-container "
+                 [style.width]=" ((handleWidth * 2) + labelWidth + 9) +'px'"
+                 [style.margin-left]="getLabelMarginLeft()">
+                <span #on class="{{ (inverse) ? getOffClasses() : getOnClasses() }}">{{ (inverse) ? offText : onText
+                    }}</span>
+                <span #label class="{{ baseClass }}-label">&nbsp;{{ labelText }}</span>
+                <span #off class="{{ (inverse) ? getOnClasses() : getOffClasses() }}">{{ (inverse) ? onText : offText
+                    }}</span>
+                <input type="checkbox" [(ngModel)]="value" [readonly]="readonly" [disabled]="disabled"
+                       (focus)="onFocus()" (blur)="onBlur()">
+            </div>
+        </div>`
 })
 
 export class JWBootstrapSwitchDirective implements AfterViewInit, ControlValueAccessor {
-
     // Defining Default Options for Switch
-    private _innerState: boolean = false;
+    public handleWidth: number = 0;
+    public labelWidth: number = 0;
+    public labelText: string = "";
+    public inverse: boolean = false;
+    public baseClass: string = "bootstrap-switch";
+    public onText: string = "ON";
+    public offText: string = "OFF";
+    public disabled: boolean = false;
+    public readonly: boolean = false;
+
     private _focused: boolean = false;
     private _size: any = 'normal';
     private _animate: boolean = true;
     private _innerAnimate: boolean = true;
-    private _disabled: boolean = false;
-    private _readonly: boolean = false;
     private _indeterminate: boolean = false;
-    private _inverse: boolean = false;
     private _onColor: string = "primary";
     private _offColor: string = "default";
-    private _onText: string = "ON";
-    private _offText: string = "OFF";
-    private _labelText: string = "";
-    private _handleWidth: string | number = "auto";
-    private _innerHandleWidth: string | number = "auto";
-    private _labelWidth: string | number = "auto";
-    private _innerLabelWidth: string | number = "auto";
-    private _baseClass: string = "bootstrap-switch";
     private _wrapperClass: string = "wrapper";
+    private _innerState: boolean = false;
+    private _innerHandleWidth: string | number = "auto";
+    private _innerLabelWidth: string | number = "auto";
 
     private _dragStart: number = null;
     private _dragEnd: any = null;
@@ -75,10 +79,10 @@ export class JWBootstrapSwitchDirective implements AfterViewInit, ControlValueAc
 
 
     // Defining DOM Elements
-    @ViewChild("container") container:ElementRef;
-    @ViewChild("on") on:ElementRef;
-    @ViewChild("label") label:ElementRef;
-    @ViewChild("off") off:ElementRef;
+    @ViewChild("container") container: ElementRef;
+    @ViewChild("on") on: ElementRef;
+    @ViewChild("label") label: ElementRef;
+    @ViewChild("off") off: ElementRef;
 
     private $on(): any {
         return this.on.nativeElement
@@ -101,39 +105,39 @@ export class JWBootstrapSwitchDirective implements AfterViewInit, ControlValueAc
      * @returns {string}
      */
     public getWrapperClasses() {
-        let output: string = this._baseClass + " " + this._baseClass + "-" + this._wrapperClass;
+        let output: string = this.baseClass + " " + this.baseClass + "-" + this._wrapperClass;
 
         if (this._focused) {
-            output += " " + this._baseClass + "-_focused";
+            output += " " + this.baseClass + "-focused";
         }
-        if (this._readonly) {
-            output += " " + this._baseClass + "-readonly";
+        if (this.readonly) {
+            output += " " + this.baseClass + "-readonly";
         }
 
         if (this._size != null) {
-            output += " " + this._baseClass + "-" + this._size;
+            output += " " + this.baseClass + "-" + this._size;
         }
 
         if (this._innerState) {
-            output += " " + this._baseClass + "-on";
+            output += " " + this.baseClass + "-on";
         } else {
-            output += " " + this._baseClass + "-off";
+            output += " " + this.baseClass + "-off";
         }
 
         if (this._animate) {
-            output += " " + this._baseClass + "-animate";
+            output += " " + this.baseClass + "-animate";
         }
 
-        if (this._disabled) {
-            output += " " + this._baseClass + "-disabled";
+        if (this.disabled) {
+            output += " " + this.baseClass + "-disabled";
         }
 
         if (this._indeterminate || this._innerState === null || typeof this._innerState === "undefined") {
-            output += " " + this._baseClass + "-indeterminate";
+            output += " " + this.baseClass + "-indeterminate";
         }
 
-        if (this._inverse) {
-            output += " " + this._baseClass + "-inverse";
+        if (this.inverse) {
+            output += " " + this.baseClass + "-inverse";
         }
 
         return output
@@ -144,10 +148,10 @@ export class JWBootstrapSwitchDirective implements AfterViewInit, ControlValueAc
      * @returns {string}
      */
     public getOnClasses(): string {
-        let output: string = this._baseClass + "-handle-on";
+        let output: string = this.baseClass + "-handle-on";
 
         if (this._onColor) {
-            output += " " + this._baseClass + "-" + this._onColor;
+            output += " " + this.baseClass + "-" + this._onColor;
         }
 
         return output
@@ -158,10 +162,10 @@ export class JWBootstrapSwitchDirective implements AfterViewInit, ControlValueAc
      * @returns {string}
      */
     public getOffClasses(): string {
-        let output: string = this._baseClass + "-handle-off";
+        let output: string = this.baseClass + "-handle-off";
 
         if (this._offColor) {
-            output += " " + this._baseClass + "-" + this._offColor;
+            output += " " + this.baseClass + "-" + this._offColor;
         }
 
         return output
@@ -172,14 +176,14 @@ export class JWBootstrapSwitchDirective implements AfterViewInit, ControlValueAc
      * @returns {string}
      */
     public getLabelMarginLeft(): string {
-        let width = (this._inverse) ? -this._handleWidth : 0;
+        let width = (this.inverse) ? -this.handleWidth : 0;
         if (this._indeterminate || this._innerState === null || typeof this._innerState === "undefined") {
-            width = -(Number(this._handleWidth) / 2);
+            width = -(this.handleWidth / 2);
         } else if (this._dragEnd) {
             width = this._dragEnd;
         } else if (!this._innerState) {
-            if (!this._inverse) {
-                width = -this._handleWidth;
+            if (!this.inverse) {
+                width = -this.handleWidth;
             } else {
                 width = 0;
             }
@@ -206,7 +210,7 @@ export class JWBootstrapSwitchDirective implements AfterViewInit, ControlValueAc
     }
 
     @HostListener('click') onClick() {
-        if (!this._disabled && !this._readonly && !this._dragEnd) {
+        if (!this.disabled && !this.readonly && !this._dragEnd) {
             this.setStateValue(!this._innerState);
         } else if (this._dragEnd) {
             this._dragEnd = null;
@@ -215,7 +219,7 @@ export class JWBootstrapSwitchDirective implements AfterViewInit, ControlValueAc
 
     private onDragStart(e: any): void {
         if (e.target === this.$label()) {
-            if (this._dragStart || this._disabled || this._readonly) {
+            if (this._dragStart || this.disabled || this.readonly) {
                 return;
             }
             e.preventDefault();
@@ -231,7 +235,7 @@ export class JWBootstrapSwitchDirective implements AfterViewInit, ControlValueAc
         if (this._dragStart) {
             e.preventDefault();
             let difference = (e.pageX || e.touches[0].pageX) - this._dragStart;
-            if (difference < -Number(this._handleWidth) || difference > 0) {
+            if (difference < -Number(this.handleWidth) || difference > 0) {
                 return;
             }
             this._dragEnd = difference;
@@ -243,8 +247,8 @@ export class JWBootstrapSwitchDirective implements AfterViewInit, ControlValueAc
             e.preventDefault();
             e.stopPropagation();
             if (this._dragEnd) {
-                let state = this._dragEnd > -(Number(this._handleWidth) / 2);
-                this.setStateValue((this._inverse) ? !state : state);
+                let state = this._dragEnd > -(Number(this.handleWidth) / 2);
+                this.setStateValue((this.inverse) ? !state : state);
             }
             this._dragStart = null;
             if (removeDragEnd) {
@@ -297,10 +301,10 @@ export class JWBootstrapSwitchDirective implements AfterViewInit, ControlValueAc
      * @description Function to make recalculate the size of the elements when options change
      * @param disableAnimation
      */
-    private calculateWith(disableAnimation:boolean = false): void {
+    private calculateWith(disableAnimation: boolean = false): void {
 
         let self = this;
-        if(disableAnimation && this._innerAnimate) {
+        if (disableAnimation && this._innerAnimate) {
             this._animate = false;
         }
         setTimeout(() => {
@@ -313,26 +317,26 @@ export class JWBootstrapSwitchDirective implements AfterViewInit, ControlValueAc
 
             if (self.$label().offsetWidth < width) {
                 if (self._innerLabelWidth === "auto") {
-                    self._labelWidth = Number(width) - 13;
+                    self.labelWidth = Number(width) - 13;
                 } else {
-                    self._labelWidth = self._innerLabelWidth;
+                    self.labelWidth = Number(self._innerLabelWidth);
                 }
             } else {
                 if (self._innerLabelWidth === "auto") {
-                    self._labelWidth = self.$label().offsetWidth;
+                    self.labelWidth = self.$label().offsetWidth;
                 } else {
-                    self._labelWidth = self._innerLabelWidth;
+                    self.labelWidth = Number(self._innerLabelWidth);
                 }
             }
 
-            self._handleWidth = width;
+            self.handleWidth = Number(width);
 
             self.ngZone.run(() => {
-                self.$label().style.width = self._labelWidth + "px";
-                self.$on().style.width = self._handleWidth + "px";
-                self.$off().style.width = self._handleWidth + "px";
-                setTimeout(()=> {
-                    if(disableAnimation && this._innerAnimate) {
+                self.$label().style.width = self.labelWidth + "px";
+                self.$on().style.width = self.handleWidth + "px";
+                self.$off().style.width = self.handleWidth + "px";
+                setTimeout(() => {
+                    if (disableAnimation && this._innerAnimate) {
                         this._animate = true;
                     }
                 });
@@ -342,7 +346,7 @@ export class JWBootstrapSwitchDirective implements AfterViewInit, ControlValueAc
 
     //Functions to set inputs and the private variables of the Switch
     @Input('switch-base-class') set setBaseClass(value: string) {
-        this._baseClass = value;
+        this.baseClass = value;
     }
 
     @Input('switch-wrapper-class') set setWrapperClass(value: string) {
@@ -350,15 +354,15 @@ export class JWBootstrapSwitchDirective implements AfterViewInit, ControlValueAc
     }
 
     @Input('switch-off-text') set setOffText(value: string) {
-        this._offText = (value) ? value : "OFF";
+        this.offText = (value) ? value : "OFF";
     }
 
     @Input('switch-label-text') set setLabelText(value: string) {
-        this._labelText = value;
+        this.labelText = value;
     }
 
     @Input('switch-on-text') set setOnText(value: string) {
-        this._onText = (value) ? value : "ON";
+        this.onText = (value) ? value : "ON";
     }
 
     @Input('switch-size') set setSize(value: string) {
@@ -379,11 +383,11 @@ export class JWBootstrapSwitchDirective implements AfterViewInit, ControlValueAc
     }
 
     @Input('switch-disabled') set setDisabled(value: boolean) {
-        this._disabled = value;
+        this.disabled = value;
     }
 
     @Input('switch-readonly') set setReadOnly(value: boolean) {
-        this._readonly = value;
+        this.readonly = value;
     }
 
     @Input('switch-indeterminate') set setIndeterminate(value: boolean) {
@@ -391,15 +395,15 @@ export class JWBootstrapSwitchDirective implements AfterViewInit, ControlValueAc
     }
 
     @Input('switch-inverse') set setInverse(value: boolean) {
-        this._inverse = value;
+        this.inverse = value;
     }
 
     @Input('switch-handle-width') set setHandleWidth(value: number | "auto") {
-        this._innerHandleWidth = (typeof(value) !== "undefined") ?  value : "auto";
+        this._innerHandleWidth = (typeof(value) !== "undefined") ? value : "auto";
     }
 
     @Input('switch-label-width') set setLabelWidth(value: number | "auto") {
-        this._innerLabelWidth = (typeof(value) !== "undefined") ?  value : "auto";
+        this._innerLabelWidth = (typeof(value) !== "undefined") ? value : "auto";
     }
 
     get value(): boolean {

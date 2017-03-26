@@ -1,56 +1,41 @@
 {
-  "name": "jw-bootstrap-switch-ng2",
-  "version": "0.0.6",
-  "description": "Bootstrap Switch for Angular 2",
-  "author": "Julio Cesar Guerra Menendez",
-  "email": "julio.war017@gamil.com",
-  "url": "https://github.com/JulioWar",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/JulioWar/jw-bootstrap-switch-ng2.git"
-  },
-  "bugs": {
-    "url": "https://github.com/JulioWar/jw-bootstrap-switch-ng2/issues"
-  },
-  "main": "./dist/index.js",
-  "typings": "./src/index.ts",
-  "keywords": [
-    "angular",
-    "angular2",
-    "bootstrap",
-    "switch",
-    "directive",
-    "toggle-switch"
-  ],
-  "peerDependencies": {
-    "@angular/core": "^2.1.2",
-    "@angular/forms": "^2.1.0"
-  },
-  "devDependencies": {
-    "@angular/common": "~2.1.0",
-    "@angular/compiler": "~2.1.0",
-    "@angular/core": "~2.1.0",
-    "@angular/forms": "~2.1.0",
-    "@angular/http": "~2.1.0",
-    "@angular/platform-browser": "~2.1.0",
-    "@angular/platform-browser-dynamic": "~2.1.0",
-    "@angular/router": "~3.1.0",
-    "@angular/upgrade": "~2.1.0",
-    "@types/core-js": "^0.9.34",
-    "angular-in-memory-web-api": "~0.1.5",
-    "bootstrap": "^3.3.7",
-    "concurrently": "^3.0.0",
-    "core-js": "^2.4.1",
-    "lite-server": "^2.2.2",
-    "reflect-metadata": "^0.1.8",
-    "rxjs": "5.0.0-beta.12",
-    "systemjs": "0.19.39",
-    "typescript": "^2.0.3",
-    "typings": "^1.4.0",
-    "zone.js": "^0.6.25"
-  },
-  "license": "MIT",
-  "scripts": {
-    "compile-dist": "tsc"
-  }
+    "name": "jw-bootstrap-switch-ng2",
+    "version": "0.0.6",
+    "description": "Bootstrap Switch for Angular 2",
+    "author": "Julio Cesar Guerra Menendez",
+    "email": "julio.war017@gamil.com",
+    "url": "https://github.com/JulioWar",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/JulioWar/jw-bootstrap-switch-ng2.git"
+    },
+    "bugs": {
+        "url": "https://github.com/JulioWar/jw-bootstrap-switch-ng2/issues"
+    },
+    "main": "./dist/index.js",
+    "typings": "./src/index.ts",
+    "keywords": [
+        "angular",
+        "angular2",
+        "bootstrap",
+        "switch",
+        "directive",
+        "toggle-switch",
+        "bootstrap-switch"
+    ],
+    "peerDependencies": {
+        "@angular/core": "^2.1.2",
+        "@angular/forms": "^2.1.2",
+        "rxjs": "^5.0.1",
+        "zone.js": "^0.7.2"
+    },
+    "devDependencies": {
+        "@angular/common": "^2.1.2",
+        "@angular/core": "^2.1.2",
+        "@angular/forms": "^2.1.2"
+    },
+    "license": "MIT",
+    "scripts": {
+        "compile-dist": "tsc"
+    }
 }
