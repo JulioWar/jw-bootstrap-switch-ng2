@@ -27,11 +27,10 @@ const CUSTOM_INPUT: any = {
 
 @Component({
     selector: 'bSwitch',
-    outputs: ['value'],
     providers: [CUSTOM_INPUT],
     template: `
         <div class="{{ getWrapperClasses() }}" [style.width]=" (handleWidth  + (labelWidth + 9) ) +'px'">
-            <div #container class="{{ baseClass }}-container "
+            <div #container class="{{ baseClass }}-container"
                  [style.width]=" ((handleWidth * 2) + labelWidth + 9) +'px'"
                  [style.margin-left]="getLabelMarginLeft()">
                 <span #on class="{{ (inverse) ? getOffClasses() : getOnClasses() }}">{{ (inverse) ? offText : onText
