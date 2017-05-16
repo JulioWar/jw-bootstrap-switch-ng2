@@ -216,6 +216,25 @@ export class JWBootstrapSwitchDirective implements AfterViewInit, ControlValueAc
         }
     }
 
+    @HostListener('keydown',['$event']) onKeyDown(e: KeyboardEvent) {
+        if(!e.which || this.disabled || this.readonly) {
+            return;
+        }
+        switch(e.which) {
+            case 37:
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                this.setStateValue(false);
+                break;
+            case 39:
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                this.setStateValue(true);
+                break;
+
+        }
+    }
+
     private onDragStart(e: any): void {
         if (e.target === this.$label()) {
             if (this._dragStart || this.disabled || this.readonly) {

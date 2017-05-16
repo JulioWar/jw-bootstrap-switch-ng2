@@ -159,6 +159,23 @@ var JWBootstrapSwitchDirective = (function () {
             this._dragEnd = null;
         }
     };
+    JWBootstrapSwitchDirective.prototype.onKeyDown = function (e) {
+        if (!e.which || this.disabled || this.readonly) {
+            return;
+        }
+        switch (e.which) {
+            case 37:
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                this.setStateValue(false);
+                break;
+            case 39:
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                this.setStateValue(true);
+                break;
+        }
+    };
     JWBootstrapSwitchDirective.prototype.onDragStart = function (e) {
         if (e.target === this.$label()) {
             if (this._dragStart || this.disabled || this.readonly) {
@@ -445,6 +462,12 @@ var JWBootstrapSwitchDirective = (function () {
         __metadata('design:paramtypes', []), 
         __metadata('design:returntype', void 0)
     ], JWBootstrapSwitchDirective.prototype, "onClick", null);
+    __decorate([
+        core_1.HostListener('keydown', ['$event']), 
+        __metadata('design:type', Function), 
+        __metadata('design:paramtypes', [KeyboardEvent]), 
+        __metadata('design:returntype', void 0)
+    ], JWBootstrapSwitchDirective.prototype, "onKeyDown", null);
     __decorate([
         core_1.HostListener('touchstart', ['$event']), 
         __metadata('design:type', Function), 

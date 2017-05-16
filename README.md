@@ -1,4 +1,7 @@
 # jw-bootstrap-switch-ng2
+[![npm (scoped)](https://img.shields.io/npm/v/jw-bootstrap-switch-ng2.svg?style=flat-square)]()
+[![npm](https://img.shields.io/npm/dt/jw-bootstrap-switch-ng2.svg?style=flat-square)]()
+
 [![NPM](https://nodei.co/npm/jw-bootstrap-switch-ng2.png?compact=true)](https://www.npmjs.com/package/jw-bootstrap-switch-ng2)
 
 Angular directive for Bootstrap Switch. Useful to make a checkbox more entertaining. See the [Demo](https://juliowar.github.io/jw-bootstrap-switch-ng2)
