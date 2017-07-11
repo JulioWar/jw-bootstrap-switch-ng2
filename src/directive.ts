@@ -29,16 +29,16 @@ const CUSTOM_INPUT: any = {
     selector: 'bSwitch',
     providers: [CUSTOM_INPUT],
     template: `
-        <div class="{{ getWrapperClasses() }}" [style.width]=" (handleWidth  + (labelWidth + 9) ) +'px'">
+        <div class="{{ getWrapperClasses() }}" [style.width]=" (handleWidth  + labelWidth ) +'px'">
             <div #container class="{{ baseClass }}-container"
-                 [style.width]=" ((handleWidth * 2) + labelWidth + 9) +'px'"
-                 [style.margin-left]="getLabelMarginLeft()">
-                <span #on class="{{ (inverse) ? getOffClasses() : getOnClasses() }}">{{ (inverse) ? offText : onText
-                    }}</span>
-                <span #label class="{{ baseClass }}-label">&nbsp;{{ labelText }}</span>
+                 [style.width]=" ((handleWidth * 2) + labelWidth) +'px'"
+                 [style.margin-left]="getLabelMarginLeft()"><!--
+                --><span #on class="{{ (inverse) ? getOffClasses() : getOnClasses() }}">{{ (inverse) ? offText : onText
+                }}</span><!--
+                --><span #label class="{{ baseClass }}-label">&nbsp;{{ labelText }}</span>
                 <span #off class="{{ (inverse) ? getOnClasses() : getOffClasses() }}">{{ (inverse) ? onText : offText
-                    }}</span>
-                <input type="checkbox" [(ngModel)]="value" [readonly]="readonly" [disabled]="disabled"
+                }}</span><!--
+                --><input type="checkbox" [(ngModel)]="value" [readonly]="readonly" [disabled]="disabled"
                        (focus)="onFocus()" (blur)="onBlur()">
             </div>
         </div>`
@@ -335,7 +335,7 @@ export class JWBootstrapSwitchDirective implements AfterViewInit, ControlValueAc
 
             if (self.$label().offsetWidth < width) {
                 if (self._innerLabelWidth === "auto") {
-                    self.labelWidth = Number(width) - 13;
+                    self.labelWidth = Number(width);
                 } else {
                     self.labelWidth = Number(self._innerLabelWidth);
                 }

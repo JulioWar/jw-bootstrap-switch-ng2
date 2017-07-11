@@ -265,7 +265,7 @@ var JWBootstrapSwitchDirective = (function () {
                 : self._innerHandleWidth;
             if (self.$label().offsetWidth < width) {
                 if (self._innerLabelWidth === "auto") {
-                    self.labelWidth = Number(width) - 13;
+                    self.labelWidth = Number(width);
                 }
                 else {
                     self.labelWidth = Number(self._innerLabelWidth);
@@ -589,7 +589,7 @@ var JWBootstrapSwitchDirective = (function () {
         core_1.Component({
             selector: 'bSwitch',
             providers: [CUSTOM_INPUT],
-            template: "\n        <div class=\"{{ getWrapperClasses() }}\" [style.width]=\" (handleWidth  + (labelWidth + 9) ) +'px'\">\n            <div #container class=\"{{ baseClass }}-container\"\n                 [style.width]=\" ((handleWidth * 2) + labelWidth + 9) +'px'\"\n                 [style.margin-left]=\"getLabelMarginLeft()\">\n                <span #on class=\"{{ (inverse) ? getOffClasses() : getOnClasses() }}\">{{ (inverse) ? offText : onText\n                    }}</span>\n                <span #label class=\"{{ baseClass }}-label\">&nbsp;{{ labelText }}</span>\n                <span #off class=\"{{ (inverse) ? getOnClasses() : getOffClasses() }}\">{{ (inverse) ? onText : offText\n                    }}</span>\n                <input type=\"checkbox\" [(ngModel)]=\"value\" [readonly]=\"readonly\" [disabled]=\"disabled\"\n                       (focus)=\"onFocus()\" (blur)=\"onBlur()\">\n            </div>\n        </div>"
+            template: "\n        <div class=\"{{ getWrapperClasses() }}\" [style.width]=\" (handleWidth  + labelWidth ) +'px'\">\n            <div #container class=\"{{ baseClass }}-container\"\n                 [style.width]=\" ((handleWidth * 2) + labelWidth) +'px'\"\n                 [style.margin-left]=\"getLabelMarginLeft()\"><!--\n                --><span #on class=\"{{ (inverse) ? getOffClasses() : getOnClasses() }}\">{{ (inverse) ? offText : onText\n                }}</span><!--\n                --><span #label class=\"{{ baseClass }}-label\">&nbsp;{{ labelText }}</span>\n                <span #off class=\"{{ (inverse) ? getOnClasses() : getOffClasses() }}\">{{ (inverse) ? onText : offText\n                }}</span><!--\n                --><input type=\"checkbox\" [(ngModel)]=\"value\" [readonly]=\"readonly\" [disabled]=\"disabled\"\n                       (focus)=\"onFocus()\" (blur)=\"onBlur()\">\n            </div>\n        </div>"
         }), 
         __metadata('design:paramtypes', [core_1.NgZone])
     ], JWBootstrapSwitchDirective);
