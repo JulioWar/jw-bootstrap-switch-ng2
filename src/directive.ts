@@ -68,7 +68,7 @@ export class JWBootstrapSwitchDirective implements AfterViewInit, ControlValueAc
     private _innerHandleWidth: string | number = "auto";
     private _innerLabelWidth: string | number = "auto";
 
-    private _dragStart: number = null;
+    private _dragStart: any = null;
     private _dragEnd: any = null;
 
     private _onTouchedCallback: () => void = callback;
