@@ -1,4 +1,5 @@
 /.idea
+/dist
 /typings
 /node_modules
 *.log

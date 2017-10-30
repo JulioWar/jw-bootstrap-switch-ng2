@@ -2,5 +2,6 @@
 /typings
 /node_modules
 /test
+/src
 /docs
 *.log

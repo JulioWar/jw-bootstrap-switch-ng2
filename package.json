@@ -12,8 +12,8 @@
   "bugs": {
     "url": "https://github.com/JulioWar/jw-bootstrap-switch-ng2/issues"
   },
-  "main": "./src/index.js",
-  "typings": "./src/index.ts",
+  "main": "./dist/index.js",
+  "typings": "./dist/index.ts",
   "keywords": [
     "angular",
     "angular2",
@@ -36,6 +36,6 @@
   },
   "license": "MIT",
   "scripts": {
-    "compile-dist": "tsc"
+    "build": "rm -r dist && mkdir dist && cp src/directive.ts dist/directive.ts && cp src/index.ts dist/index.ts && tsc"
   }
 }
