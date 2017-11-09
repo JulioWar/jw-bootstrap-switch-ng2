@@ -33,11 +33,9 @@ const CUSTOM_INPUT: any = {
             <div #container class="{{ baseClass }}-container"
                  [style.width]=" ((handleWidth * 2) + labelWidth) +'px'"
                  [style.margin-left]="getLabelMarginLeft()"><!--
-                --><span #on class="{{ (inverse) ? getOffClasses() : getOnClasses() }}">{{ (inverse) ? offText : onText
-                }}</span><!--
+                --><span #on [innerHTML]="(inverse) ? offText : onText" class="{{ (inverse) ? getOffClasses() : getOnClasses() }}"></span><!--
                 --><span #label class="{{ baseClass }}-label">&nbsp;{{ labelText }}</span><!--
-                --><span #off class="{{ (inverse) ? getOnClasses() : getOffClasses() }}">{{ (inverse) ? onText : offText
-                }}</span><!--
+                --><span #off [innerHTML]="(inverse) ? onText : offText" class="{{ (inverse) ? getOnClasses() : getOffClasses() }}"></span><!--
                 --><input type="checkbox" [(ngModel)]="value" [readonly]="readonly" [disabled]="disabled"
                        (focus)="onFocus()" (blur)="onBlur()">
             </div>
@@ -436,12 +434,13 @@ export class JWBootstrapSwitchDirective implements AfterViewInit, ControlValueAc
     private setStateValue(v: boolean): void {
         if (v !== this._innerState) {
 
+            this._onChangeCallback(v);
+
             this.onChangeState.emit({
                 previousValue: this._innerState,
                 currentValue: v
             });
             this._innerState = v;
-            this._onChangeCallback(v);
         }
     }
 
