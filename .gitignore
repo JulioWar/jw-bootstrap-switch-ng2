@@ -3,3 +3,4 @@
 /typings
 /node_modules
 *.log
+*.metadata.json
