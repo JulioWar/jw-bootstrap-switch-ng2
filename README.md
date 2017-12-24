@@ -100,8 +100,8 @@ export class AppComponent {}
 |`switch-label-text`| Define the text of the `label`| string ||
 |`switch-on-text` | Define the text when the `ngModel` is true |string| |
 |`switch-off-text`| Define the text when the `ngModel` is false | string ||
-|`switch-on-color`| Define the class to give style to the `ngModel` equals to `ON` or `true` | string | `primary,info,success,warning,default`|
-|`switch-off-color`| Define the class to give style to the `ngModel` equals to `OFF` or `false` | string | `primary,info,success,warning,default`|
+|`switch-on-color`| Define the class to give style to the `ngModel` equals to `ON` or `true` | string | `primary,info,success,warning,danger,default`|
+|`switch-off-color`| Define the class to give style to the `ngModel` equals to `OFF` or `false` | string | `primary,info,success,warning,danger,default`|
 |`switch-size` | Define the size of the switch | string | `mini,small,normal,large`|
 |`switch-disabled` | Define if the switch is disabled | boolean ||
 |`switch-readonly` | Define if the switch is readonly | boolean ||
