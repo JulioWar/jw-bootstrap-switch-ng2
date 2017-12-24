@@ -36,7 +36,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "build": "rm -r dist && mkdir dist && cp src/directive.ts dist/directive.ts && cp src/index.ts dist/index.ts && tsc",
+    "build": "rm -r dist && mkdir dist && tsc",
     "release": "npm run build && npm version patch && npm publish"
   }
 }
