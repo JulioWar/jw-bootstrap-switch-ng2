@@ -6,15 +6,29 @@
 
 Angular directive for Bootstrap Switch. Useful to make a checkbox more entertaining. See the [Demo](https://juliowar.github.io/jw-bootstrap-switch-ng2)
 >**Notes:**
->Written with typescript and javascript, without JQuery.
+>Written with typescript, without JQuery.
 
 
 ![preview bootstrap switch](https://www.dropbox.com/s/ujuyufi3akvnu0v/preview-switch.gif?raw=1)
+
+## Support
+| NPM Version | Angular |
+|-----------|:-----------|
+| ^2.0.0 | Angular 6+|
+| 1.0.10 | Angular 5 |
+| 1.0.0  | Angular 2-4 |
 
 ## Installation
 ```
   npm install jw-bootstrap-switch-ng2 --save
 ```
+
+## Breaking Changes
+
+#### Version ^2.0.0
+- Now in order to capture the event when the switch change, now you need to use the event **`changeState`**
+- Rename the module from `` to `JwBootstrapSwitchNg2Module`
+
 
 ## Usage
 Import the css file:
@@ -29,36 +43,14 @@ Or download from the official page [here](http://bootstrapswitch.com/)
 Add JWBootstrapSwitchModule to your list of modules imports:
 
 ```javascript
-import { JWBootstrapSwitchModule } from 'jw-bootstrap-switch-ng2';
+import { JwBootstrapSwitchNg2Module } from 'jw-bootstrap-switch-ng2';
 
 @NgModule({
-  imports: [BrowserModule, JWBootstrapSwitchModule],
+  imports: [BrowserModule, JwBootstrapSwitchNg2Module],
   declarations: [AppComponent],
   bootstrap: [AppComponent]
 })
 class AppModule {}
-```
-
-Configuration for `systemjs.config.js` file:
-```javascript
-(function (global) {
-    System.config({
-        paths: {
-            'npm:': 'node_modules/'
-        },
-        map: {
-            ...,
-            'jw-bootstrap-switch-ng2': 'npm:jw-bootstrap-switch-ng2'
-        },
-        packages: {
-            ...,
-            'jw-bootstrap-switch-ng2': {
-                main: './dist/index.js',
-                defaultExtension: 'js'
-            }
-        }
-    });
-})(this);
 ```
 
 You can then use the directive in your templates:
@@ -114,7 +106,7 @@ export class AppComponent {}
 
 | Attribute | Description | Return |
 |-----------|:-----------|:-------|
-|`onChangeState` | Event fired when change `ngModel` attribute | Object with the previous and current value: ` {previousValue: false, currentValue: true}` |
+|`changeState` | Event fired when change `ngModel` attribute | Object with the previous and current value: ` {previousValue: false, currentValue: true}` |
 
 ## Notes
 For Issues, please make a example with `jsfiddle` or something like that.
