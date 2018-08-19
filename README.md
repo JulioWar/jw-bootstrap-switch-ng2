@@ -27,7 +27,7 @@ Angular directive for Bootstrap Switch. Useful to make a checkbox more entertain
 
 #### Version ^2.0.0
 - Now in order to capture the event when the switch change, now you need to use the event **`changeState`**
-- Rename the module from `` to `JwBootstrapSwitchNg2Module`
+- Rename the module from `JWBootstrapSwitchModule` to `JwBootstrapSwitchNg2Module`
 
 
 ## Usage
@@ -40,7 +40,7 @@ CDN:
 Or download from the official page [here](http://bootstrapswitch.com/)
 
 
-Add JWBootstrapSwitchModule to your list of modules imports:
+Add JwBootstrapSwitchNg2Module to your list of modules imports:
 
 ```javascript
 import { JwBootstrapSwitchNg2Module } from 'jw-bootstrap-switch-ng2';
