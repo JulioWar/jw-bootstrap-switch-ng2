@@ -1,10 +1,11 @@
-import {Component} from '@angular/core';
+import {Component, ChangeDetectionStrategy} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
   public offText = 'Off Text';
@@ -20,7 +21,7 @@ export class AppComponent {
   public onText: string = '';
   public offColor: string = '';
   public labelText: string = '';
-  public state: boolean = true;
+  public state: boolean = false;
   public value: boolean = true;
   public inverseValue: boolean = false;
   public handleWidth: string = 'auto';
@@ -35,6 +36,16 @@ export class AppComponent {
     this.form = this.fb.group({
       view: [null, Validators.required]
     });
+  }
+
+  toggleDisable() {
+    if (this.form.disabled) {
+      console.log('enable form');
+      this.form.enable();
+    } else {
+      console.log('disable form');
+      this.form.disable();
+    }
   }
 
   getAlert(value: any): void {

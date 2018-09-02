@@ -193,5 +193,17 @@
         </div>
       </form>
     </div>
+    <div class="col-md-4">
+        <button class="btn btn-default" style="margin-top: 15px" (click)="toggleDisable()">
+            <span *ngIf="form.disabled">Enable</span>  
+            <span *ngIf="!form.disabled">Disabled</span> 
+            Form
+        </button>
+    </div>
+    <div class="col-md-4">
+        <div [style.display]="(state) ? 'block':'none'">
+            <bSwitch [switch-label-width]="52" [switch-handle-width]="52"></bSwitch>
+        </div>
+    </div>
   </div>
 </div>
