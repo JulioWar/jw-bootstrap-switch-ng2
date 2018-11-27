@@ -75,7 +75,7 @@ You can then use the directive in your templates:
           [switch-inverse]="inverse"
           [switch-handle-width]="handleWidth"
           [switch-base-class]="'bootstrap-switch'"
-          (onChangeState)="onChange($event)">
+          (changeState)="onChange($event)">
   </bSwitch>
   `
 })
