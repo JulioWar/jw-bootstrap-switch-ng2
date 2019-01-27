@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "build-dist": "ng build jw-bootstrap-switch-ng2 --prod"
+    "build-dist": "ng build jw-bootstrap-switch-ng2 --prod && cp README.md dist/jw-bootstrap-switch-ng2"
   },
   "private": true,
   "dependencies": {
