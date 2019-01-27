@@ -1,6 +1,6 @@
 {
   "name": "jw-bootstrap-switch-ng2",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Bootstrap Switch for Angular 2+",
   "author": "Julio Cesar Guerra Menendez",
   "email": "julio.war017@gamil.com",
@@ -25,9 +25,9 @@
     "url": "https://github.com/JulioWar/jw-bootstrap-switch-ng2/issues"
   },
   "peerDependencies": {
-    "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
-    "@angular/core": "^6.0.0-rc.0 || ^6.0.0",
-    "@angular/forms": "^6.0.0-rc.0 || ^6.0.0"
+    "@angular/common": "^6.0.0-rc.0 || ^6.0.0 || ^7.0.0",
+    "@angular/core": "^6.0.0-rc.0 || ^6.0.0 || ^7.0.0",
+    "@angular/forms": "^6.0.0-rc.0 || ^6.0.0  || ^7.0.0"
   },
   "license": "MIT"
 }
